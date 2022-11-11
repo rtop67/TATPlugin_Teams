@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TATPlugin_Teams", "TATPlugin_Teams.csproj", "{9CD97C13-F98C-4B3D-8684-B76E39F63B3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CD97C13-F98C-4B3D-8684-B76E39F63B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CD97C13-F98C-4B3D-8684-B76E39F63B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CD97C13-F98C-4B3D-8684-B76E39F63B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CD97C13-F98C-4B3D-8684-B76E39F63B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CE9AA49-7D33-49FA-AC7C-2D96981B7667}
+	EndGlobalSection
+EndGlobal
