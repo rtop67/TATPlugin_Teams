@@ -1,0 +1,12 @@
+E:\VS\Repos\TATPlugin_Teams\bin\Debug\net5.0-windows\TATPlugin_Teams.deps.json
+E:\VS\Repos\TATPlugin_Teams\bin\Debug\net5.0-windows\TATPlugin_Teams.dll
+E:\VS\Repos\TATPlugin_Teams\bin\Debug\net5.0-windows\ref\TATPlugin_Teams.dll
+E:\VS\Repos\TATPlugin_Teams\bin\Debug\net5.0-windows\TATPlugin_Teams.pdb
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.csproj.AssemblyReference.cache
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.GeneratedMSBuildEditorConfig.editorconfig
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.AssemblyInfoInputs.cache
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.AssemblyInfo.cs
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.csproj.CoreCompileInputs.cache
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.dll
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\ref\TATPlugin_Teams.dll
+E:\VS\Repos\TATPlugin_Teams\obj\Debug\net5.0-windows\TATPlugin_Teams.pdb

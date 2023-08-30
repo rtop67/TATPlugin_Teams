@@ -80,10 +80,8 @@ namespace TATPlugin_Teams
             return strOut;
         }
 
-        public static string[,] rgOSVer = new string[58, 2]  // Will need updating as new OS builds release
+        public static string[,] rgOSVer = new string[70, 2]  // Will need updating as new OS builds release
         {
-            {"10.13.0", "MacOS High Sierra Released 9-25-2017" },
-            {"10.14.0", "MacOS Mojave Released 9-24-2018" },
             {"10.15.0", "MacOS Catalina Released 10-7-2019" },
             {"10.15.1", "MacOS Catalina Released 10-29-2019" },
             {"10.15.2", "MacOS Catalina Released 12-10-2019" },
@@ -112,6 +110,11 @@ namespace TATPlugin_Teams
             {"11.6.3", "MacOS Big Sur Released 1-26-2022" },
             {"11.6.4", "MacOS Big Sur Released 2-14-2022" },
             {"11.6.5", "MacOS Big Sur Released 3-14-2022" },
+            {"11.7", "MacOS Big Sur Released 9-12-2022" },
+            {"11.7.1", "MacOS Big Sur Released 10-24-2022" },
+            {"11.7.2", "MacOS Big Sur Released 12-13-2022" },
+            {"11.7.3", "MacOS Big Sur Released 1-23-2023" },
+            {"11.7.4", "MacOS Big Sur Released 2-15-2023" },
             {"12.0", "MacOS Monterey Released 10-25-2021" },
             {"12.0.1", "MacOS Monterey Released 10-25-2021" },
             {"12.1.0", "MacOS Monterey Released 12-13-2021" },
@@ -124,6 +127,13 @@ namespace TATPlugin_Teams
             {"12.5.1", "MacOS Monterey Released 8-17-2022" },
             {"12.6.0", "MacOS Monterey Released 9-12-2022" },
             {"12.6.1", "MacOS Monterey Released 10-24-2022" },
+            {"12.6.2", "MacOS Monterey Released 12-13-2022" },
+            {"12.6.3", "MacOS Monterey Released 1-23-2023" },
+            {"13.0.0", "MacOS Ventura Released 10-24-2022" },
+            {"13.0.1", "MacOS Ventura Released 11-9-2022" },
+            {"13.1.0", "MacOS Ventura Released 12-13-2022" },
+            {"13.2.0", "MacOS Ventura Released 1-23-2023" },
+            {"13.2.1", "MacOS Ventura Released 2-13-2023" },
             {"9200", "Windows 8 or Windows Server 2012" },
             {"9600", "Windows 8.1 or Windows Server 2012 R2" },
             {"10240", "Win10 TH1 Released 7-29-2015" },
@@ -139,7 +149,9 @@ namespace TATPlugin_Teams
             {"19042", "Win10 20H2 Released 10-20-2020" },
             {"19043", "Win10 21H1 Released 5-18-2021" },
             {"19044", "Win10 21H2 Released 11-16-2021" },
-            {"22000", "Win11 21H2" }
+            {"19045", "Win10 22H2 Released 10-18-2022" },
+            {"22000", "Win11 21H2 Released 10-4-2021" },
+            {"22621", "Win11 22H2 Released 9-20-2022" }
         };
 
         public static string GetOSVerInfo(string strBuild) // To get the info above...
@@ -284,9 +296,10 @@ namespace TATPlugin_Teams
             return strTermReason;
         }
 
-        public static string[,] rgFileType = new string[18, 2]  // Which Teams log is being loaded?
+        public static string[,] rgFileType = new string[19, 2]  // Which Teams log is being loaded?
         {
             {"logs.txt", "mainlog" },
+            {"old_logs_", "mainlog" },
             {"SquirrelSetup-root", "squirrelroot" },
             {"SquirrelSetup-Teams", "squirrelteams" },
             {"teams-meeting-addin", "teamsaddin" },

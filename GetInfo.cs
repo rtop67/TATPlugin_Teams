@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using static TATPlugin_Teams.Teams;
 using static TATPlugin_Teams.Resource;
 
@@ -232,11 +233,12 @@ namespace TATPlugin_Teams
 
             if (g_strFileType == "mainlog")
             {
-                iSearch = TextPos(g_allText, "ring is initialized", 0, true);
+                iSearch = TextPos(g_allText, "ring=", 0, true);
                 if (iSearch != -1)
                 {
-                    strReturn = g_allText.Substring(iSearch + 4, 8);
+                    strReturn = g_allText.Substring(iSearch, 8);
                     strReturn = strReturn.Trim();
+                    strReturn = strReturn.TrimEnd(',', '"');
                 }
             }
             else if (g_strFileType == "maindiag")
@@ -370,7 +372,7 @@ namespace TATPlugin_Teams
         {
             string strOSBuild = "";
 
-            if (strOSVer.StartsWith("10.1") || strOSVer.StartsWith("11.") || strOSVer.StartsWith("12."))
+            if (strOSVer.StartsWith("10.1") || strOSVer.StartsWith("11.") || strOSVer.StartsWith("12.") || strOSVer.StartsWith("13."))
             {
                 strOSBuild = strOSVer;
             }
@@ -378,10 +380,10 @@ namespace TATPlugin_Teams
             {
                 strOSBuild = strOSVer.Substring(4);
             }
-            else if (strOSVer.Contains("22000"))
+            /*else if (strOSVer.Contains("22000"))
             {
-                strOSBuild = "22000"; //Windows 11 - I think...
-            }
+                strOSBuild = "22000"; 
+            }*/
             else
             {
                 strOSBuild = strOSVer.Substring(5);
@@ -623,7 +625,7 @@ namespace TATPlugin_Teams
 
             if (g_strFileType == "callingdiag")
             {
-                iSearch = TextPos(g_allText, "CallId:", 0, false);
+                iSearch = TextPos(g_allText, "callId:", 0, false);
                 while (iSearch != -1)
                 {
                     iFirstPos = iSearch;
@@ -632,7 +634,7 @@ namespace TATPlugin_Teams
 
                     if (strCallID.Contains(":"))
                     {
-                        iSearch = TextPos(g_allText, "CallId:", iSearch + 1, false);
+                        iSearch = TextPos(g_allText, "callId:", iSearch + 1, false);
                         if (iSearch <= iFirstPos)
                         {
                             break;
@@ -648,7 +650,7 @@ namespace TATPlugin_Teams
                         g_CallIDs.Add(strCallID);
                     }
 
-                    iSearch = TextPos(g_allText, "CallId:", iSearch + 1, false);
+                    iSearch = TextPos(g_allText, "callId:", iSearch + 1, false);
                     if (iSearch <= iFirstPos)
                         break;
                 }
@@ -748,6 +750,8 @@ namespace TATPlugin_Teams
                 {
                     if (strLine.Contains("-- error --") && strLine.Contains("crash"))
                     {
+                        if (strLine.Contains("extraparameter to crashReporter:"))
+                            break;
                         if (!g_CrashLines.Contains(strLine))
                         {
                             g_CrashLines.Add(strLine);

@@ -25,7 +25,6 @@ namespace TATPlugin_Teams
             g_MediaLines.Add("");
 
             GetCallIDs();
-
             if (g_CallIDs.Count > 0)
             {
                 g_MediaLines.Add("CallIDs Found:");
@@ -35,13 +34,29 @@ namespace TATPlugin_Teams
                 }
                 g_MediaLines.Add("");
             }
-            if (g_CallIDs.Count == 0)
+            else if (g_CallIDs.Count == 0)
             {
                 g_MediaLines.Add("No CallIds found.");
             }
 
             g_MediaLines.Add(strBWCap += GetBWCap());
             g_MediaLines.Add(strECSBWCap += GetECSBWCap());
+            g_MediaLines.Add("");
+
+            GetVidDev();
+            if (g_VideoDevices.Count > 0)
+            {
+                g_MediaLines.Add("Video Devices Used:");
+                foreach (string strDev in g_VideoDevices)
+                {
+                    g_MediaLines.Add(strDev);
+                }
+                g_MediaLines.Add("");
+            }
+            else if (g_VideoDevices.Count == 0)
+            {
+                g_MediaLines.Add("No Video or Screen Sharing from this user.");
+            }
 
             g_MediaLines.Add(GetFooterText());
         }

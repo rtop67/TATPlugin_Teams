@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "G8SKDWKCWNGRw02N7HfDoKkjSqZSTZZj397Lt0U+AoeRlB7B66u6lD+6C/ZA9G7OkZInjiQa2nm1glFFgK4Pxg==",
+  "success": true,
+  "projectFilePath": "C:\\WorkStuff\\Repos\\TATPlugin_Teams\\TATPlugin_Teams.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\randyto\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
+    "C:\\Users\\randyto\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net451\\1.0.3\\microsoft.netframework.referenceassemblies.net451.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

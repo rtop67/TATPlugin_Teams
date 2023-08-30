@@ -60,7 +60,7 @@ namespace TATPlugin_Teams
                     while (EOL == false)
                     {
                         iState = TextPos(strCopy, "\"state\":", iPos, false);
-                        if (iState == -1 || iState < 20) // had to do < 20 because it woudl still be "found" sometimes, but not really found... wierd
+                        if (iState == -1 || iState < 20) // had to do < 20 because it would still be "found" sometimes, but not really found... wierd
                             break;
                         iComma = TextPos(strCopy, ",", iState, false);
                         iPos = iComma;

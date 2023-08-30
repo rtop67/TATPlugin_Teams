@@ -80,14 +80,55 @@ namespace TATPlugin_Teams
             return strReturn;
         }
 
-        //Get Camera / Screen Sharing
+        //Get Cameras / Screen Sharing Used
         public static void GetVidDev()
         {
             int iSearch = 0;
             int iFirstPos = 0;
+            int iEnd = 0;
+            int iLen = 0;
             string strVidDev = "";
 
+            if (g_strFileType == "mediamsrtc")
+            {
+                iSearch = TextPos(g_allText, "source friendly-name:", 0, false);
+                while (iSearch != -1)
+                {
+                    iFirstPos = iSearch;
+                    iSearch = iSearch + 1;
 
+                    iEnd = TextPos(g_allText, "\n202", iSearch, false); // can't seem to just find "\n" so have to hack it a bit using characters from the next line (BRB output)
+
+                    if (iEnd == -1)  // For TAT decoded files need to do something different.
+                    {
+                        iEnd = TextPos(g_allText, "(", iSearch, false);
+                        iEnd = iEnd - 2;
+                    }
+                    else
+                    {
+                        iEnd = iEnd - 4;  // hack to eliminate the extra characters. (for BRB decoded logs)
+                    }
+                    
+                    iLen = iEnd - iSearch;
+                    strVidDev = g_allText.Substring(iSearch, iLen);
+                    
+                    bool bFound = false;
+                    foreach (string strItem in g_VideoDevices)
+                    {
+                        if (strItem.Contains(strVidDev))
+                        {
+                            bFound = true;
+                        }
+                    }
+                    if (bFound == false)
+                    {
+                        g_VideoDevices.Add(strVidDev);
+                    }
+                    iSearch = TextPos(g_allText, "source friendly-name:", iSearch+1, false);
+                    if (iSearch <= iFirstPos)
+                        break;
+                }
+            }
         }
     }
 }
