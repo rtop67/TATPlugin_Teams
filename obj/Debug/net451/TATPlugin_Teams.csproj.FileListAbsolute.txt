@@ -7,3 +7,12 @@ E:\VS\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.AssemblyInfo.cs
 E:\VS\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.csproj.CoreCompileInputs.cache
 E:\VS\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.dll
 E:\VS\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.pdb
+C:\WorkStuff\Repos\TATPlugin_Teams\bin\Debug\net451\TATPlugin_Teams.dll
+C:\WorkStuff\Repos\TATPlugin_Teams\bin\Debug\net451\TATPlugin_Teams.pdb
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.csproj.AssemblyReference.cache
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.GeneratedMSBuildEditorConfig.editorconfig
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.AssemblyInfoInputs.cache
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.AssemblyInfo.cs
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.csproj.CoreCompileInputs.cache
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.dll
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.pdb

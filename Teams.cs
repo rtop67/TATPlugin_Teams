@@ -7,7 +7,8 @@ using System.Threading;
 using static TATPlugin_Teams.Resource;
 using static TATPlugin_Teams.GetInfo;
 using static TATPlugin_Teams.CallingDiag;
-using static TATPlugin_Teams.MainLogs;
+using static TATPlugin_Teams.LogsTxt;
+using static TATPlugin_Teams.WebLog;
 using static TATPlugin_Teams.RendererDiag;
 using static TATPlugin_Teams.MediaMsrtc;
 
@@ -105,7 +106,8 @@ namespace TATPlugin_Teams
             g_CallIDs.Clear();
             g_allText = "";
             g_allCallingLines.Clear();
-            g_MainInfoLines.Clear();
+            g_LogsTxtLines.Clear();
+            g_WebLogLines.Clear();
             g_RendererLines.Clear();
             g_MediaLines.Clear();
         }
@@ -130,8 +132,10 @@ namespace TATPlugin_Teams
             switch (g_strFileType)
             {
                 case "mainlog":
+                    ParseLogsTxt();
+                    break;
                 case "maindiag":
-                    ParseMainLogs();
+                    ParseWebLog();
                     break;
                 case "rendererdiag":
                     ParseRendererDiag();
@@ -151,8 +155,10 @@ namespace TATPlugin_Teams
             switch (g_strFileType)
             {
                 case "mainlog":
+                    WriteLogsTxtInfoToLog();
+                    break;
                 case "maindiag":
-                    WriteMainLog();
+                    WriteWebLogInfoToLog();
                     break;
                 case "rendererdiag":
                     WriteRendererDiag();

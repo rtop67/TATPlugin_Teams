@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.IO;
 using static TATPlugin_Teams.Teams;
 using static TATPlugin_Teams.Resource;
+using static TATPlugin_Teams.LogsTxt;
+using static TATPlugin_Teams.WebLog;
 
 namespace TATPlugin_Teams
 {
+    // For getting base information about the user and the device in use, Teams version, etc etc.
     class GetInfo
     {
         public static int TextPos(string strSource, string strFind, int iPos, bool bReverse)
@@ -29,345 +33,315 @@ namespace TATPlugin_Teams
             return iPos;
         }  // TextPos
 
+        
+
+
+        // Get first and last name of the user who generated this log
         public static string GetName()
         {
-            int iSearch = 0;
-            string strName = "";
-            int iQuote = 0;
-            int iPosLast = 0;
-            string strReturn = "Not found";
+            string strFirstName = "";
+            string strLastName = "";
+            string strFullName = "";
 
-            if (g_strFileType == "mainlog")
+            string rxLast = @"""family_name"":\s*""(\w+)""";
+            string rxFirst = @"""given_name"":\s*""(\w+)""";
+
+            Match rxFMatch = Regex.Match(g_allText, rxFirst);
+            strFirstName = rxFMatch.Groups[1].Value;
+
+            Match rxLMatch = Regex.Match(g_allText, rxLast);
+            strLastName = rxLMatch.Groups[1].Value;
+
+            if (!string.IsNullOrEmpty(strFirstName))
+                strFullName = strFirstName + " ";
+            if (!string.IsNullOrEmpty(strLastName))
+                strFullName += strLastName;
+            if (string.IsNullOrEmpty(strFullName))
             {
-                do
-                {
-                    iSearch = TextPos(g_allText, "\"name\":", iSearch, false);
-                    if (iSearch > iPosLast)
-                    {
-                        strName = g_allText.Substring(iSearch + 1, 50);
-                    }
-                    else
-                    {
-                        return strReturn;
-                    }
-                    iPosLast = iSearch;
-                } while (strName.Contains("slimcore") || strName.Contains("media-hid") || strName.Contains("V8 Proxy") || strName.Contains("Audio Service") || strName.Contains("Video Capture") || strName.Contains("Network Service") || strName.Contains("Error"));
-
-                strName = strName.Trim();
-                strName = strName.TrimStart('"');
-                iQuote = strName.IndexOf('"');
-                strName = strName.Substring(0, iQuote);
-
-                if (strName.Contains("%20"))
-                {
-                    strName = strName.Replace("%20", " ");
-                }
-
-                strReturn = strName;
-            }
-            else if (g_strFileType == "maindiag")
-            {
-                iSearch = TextPos(g_allText, "\"name\":", 0, false);
-                if (iSearch != -1)
-                {
-                    strName = g_allText.Substring(iSearch + 2, 50);
-                    iQuote = strName.IndexOf('"');
-                    strName = strName.Substring(0, iQuote);
-                    strReturn = strName;
-                }
+                strFullName = "Not found";
             }
 
-            return strReturn;
+            return strFullName;
         } // GetName
 
+        // Get the username (user@domain) of this user
         public static string GetUserName()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
             string strName = "";
-            int iQuote = 0;
+            string rxUserName = @"\""userName\""\s*:\s*\""([^\""]+)";
 
-            if (g_strFileType == "mainlog")
-            {
-                iSearch = TextPos(g_allText, "\"userName\":", 0, false);
-                if (iSearch != -1)
-                {
-                    strName = g_allText.Substring(iSearch + 1, 60);
-                    strName = strName.TrimStart('"');
-                    iQuote = strName.IndexOf('"');
-                    strName = strName.Substring(0, iQuote);
-                    strReturn = strName;
-                }
-            }
-            else if (g_strFileType == "maindiag")
-            {
-                iSearch = TextPos(g_allText, "\"userName\":", 0, false);
-                if (iSearch != -1)
-                {
-                    strName = g_allText.Substring(iSearch + 2, 60);
-                    strName = strName.TrimStart('"');
-                    iQuote = strName.IndexOf('"');
-                    strName = strName.Substring(0, iQuote);
-                    strReturn = strName;
-                }
-            }
+            Match rxMatch = Regex.Match(g_allText, rxUserName);
+            strName = rxMatch.Groups[1].Value;
 
-            return strReturn;
+            if (string.IsNullOrEmpty(strName))
+                strName = "Not found";
+
+            return strName;
         } // GetUserName
 
+        // Get the user's UPN
+        public static string GetUpn()
+        {
+            string strUpn = "";
+            string rxUpn = @"\""upn\""\s*:\s*\""([^\""]+)";
+
+            Match rxMatch = Regex.Match(g_allText, rxUpn);
+            strUpn = rxMatch.Groups[1].Value;
+
+            if (string.IsNullOrEmpty(strUpn))
+                strUpn = "Not found";
+
+            return strUpn;
+        }
+
+        // Get the user's ObjectID
         public static string GetOID()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strOID = "";
+            string rxOID = @"\""oid\""\s*:\s*\""([a-fA-F\d]{8}-[a-fA-F\d]{4}-[a-fA-F\d]{4}-[a-fA-F\d]{4}-[a-fA-F\d]{12})\""";
 
-            if (g_strFileType == "mainlog")
-            {
-                iSearch = TextPos(g_allText, "\"oid\":", 0, false);
-                if (iSearch != -1)
-                {
-                    string strOID = g_allText.Substring(iSearch + 1, 37);
-                    strOID = strOID.TrimStart('"');
-                    int iQuote = strOID.IndexOf('"');
-                    if (iQuote != -1)
-                    {
-                        strOID = strOID.Substring(0, iQuote);
-                    }
-                    strReturn = strOID;
-                }
-            }
-            else if (g_strFileType == "maindiag")
-            {
-                iSearch = TextPos(g_allText, "\"oid\":", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 2, 36);
-                }
-            }
+            Match rxMatch = Regex.Match(g_allText, rxOID);
+            strOID = rxMatch.Groups[1].Value;
 
-            return strReturn;
+            if (string.IsNullOrEmpty(strOID))
+                strOID = "Not found";
+
+            return strOID;
         } // GetOID
 
+        // Get the user's TenantID
         public static string GetTenantID()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strTenant = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "Tenant Id set to", 0, true);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 1, 36);
-                }
+                string strRX = @"(?<=Tenant Id set to\s)[a-fA-F0-9]{8}[-][a-fA-F0-9]{4}[-][a-fA-F0-9]{4}[-][a-fA-F0-9]{4}[-][a-fA-F0-9]{12}";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strTenant = rxMatch.Value;
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "UserInfo.TenantId", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 4, 36);
-                }
+                string strRX = @"\""tid\""\s*:\s*\""([a-fA-F\d]{8}-[a-fA-F\d]{4}-[a-fA-F\d]{4}-[a-fA-F\d]{4}-[a-fA-F\d]{12})\""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strTenant = rxMatch.Groups[1].Value;
             }
 
-            return strReturn;
+            if (string.IsNullOrEmpty(strTenant))
+                strTenant = "Not found";
+
+            return strTenant;
         } // GetTenantID
 
+        // Get Trouter connected state
+        public static string GetTrouterConn()
+        {
+            string strConn = "";
+
+            string strRX = @"\""connected\"":\s*(true|false)?,";
+            Match rxMatch = Regex.Match(g_allText, strRX);
+            strConn = rxMatch.Groups[1].Value;
+
+            if (string.IsNullOrEmpty(strConn))
+                strConn = "Not found";
+
+            return strConn;
+        }
+
+        // Get Trouter URL
+        public static string GetTrouterUrl()
+        {
+            string strUrl = "";
+
+            string strRX = @"\""baseEndpointUrl\"":\s*\""([^\""]+)\""";
+            Match rxMatch = Regex.Match(g_allText, strRX);
+            strUrl = rxMatch.Groups[1].Value;
+
+            if (string.IsNullOrEmpty(strUrl))
+                strUrl = "Not found";
+
+            return strUrl;
+        }
+
+        // Get the version of Teams in use
         public static string GetTeamsVer()
         {
-            int iSearch = 0;
-            string strReturn = "Not found";
+            string strTeamsVer = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "Starting app Teams, version", 0, true);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 1, 12);
-                }
+                string strRX = @"Starting app [\w\s]+, version (\d+\.\d+\.\d+\.\d+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strTeamsVer = rxMatch.Groups[1].Value;
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "appversion", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 4, 12);
-                }
+                string strRX = @"\""appversion\""\s*:\s*\""(\d+\.\d+\.\d+\.(\d+))\""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strTeamsVer = rxMatch.Groups[1].Value;
             }
 
-            strReturn = strReturn.Trim(',', '"');
+            if (string.IsNullOrEmpty(strTeamsVer))
+                strTeamsVer = "Not found";
 
-            return strReturn;
+            return strTeamsVer;
         } //GetTeamsVer
 
+        // Get the slimcore version
         public static string GetSlimcoreVer()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strSCVer = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "built-in slimcore version:", 0, true);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 1, 10);
-                }
+                string strRX = @"slimcore version:\s*(\d+\.\d+\.\d+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strSCVer = rxMatch.Groups[1].Value;
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "slimcoreVersion\":", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 2, 10);
-                }
+                string strRX = @"slimcoreVersion.*(\d+\.\d+\.\d+)\""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strSCVer = rxMatch.Groups[1].Value;
             }
 
-            strReturn = strReturn.Trim(',', '"');
+            if (string.IsNullOrEmpty(strSCVer))
+                strSCVer = "Not found";
 
-            return strReturn;
+            return strSCVer;
         } // GetSlimcoreVer
 
+        // Get the build date 
+        public static string GetBuildDate()
+        {
+            string strBuildDate = "";
+
+            string strRX = @"\""buildDate\"": \""(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\""";
+            Match rxMatch = Regex.Match(g_allText, strRX);
+            strBuildDate = rxMatch.Groups[1].Value;
+
+            if (!string.IsNullOrEmpty(strBuildDate))
+            {
+                strBuildDate = strBuildDate.Replace('T', ' ');
+            }
+            else
+                strBuildDate = "Not found";
+
+            return strBuildDate;
+        }// GetBuildDate
+
+        // Get the Teams Ring in use
         public static string GetRing()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strRing = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "ring=", 0, true);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch, 8);
-                    strReturn = strReturn.Trim();
-                    strReturn = strReturn.TrimEnd(',', '"');
-                }
+                string strRX = @"\?ring=(\w+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strRing = rxMatch.Groups[1].Value;
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "UserInfo.Ring", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 4, 8);
-                    strReturn = strReturn.Trim();
-                    strReturn = strReturn.TrimEnd(',', '"');
-                }
+                string strRX = @"""UserInfo\.Ring"": ""(\w+)"",";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strRing = rxMatch.Groups[1].Value;
             }
 
-            return strReturn;
+            if (string.IsNullOrEmpty(strRing))
+                strRing = "Not found";
+
+            return strRing;
         } // GetRing
 
         public static string GetClientType()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strClientType = "";
 
             if (g_strFileType == "mainlog")
             {
-                iSearch = TextPos(g_allText, "AppInfo.ClientType", 0, true);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 2, 8);
-                    strReturn = strReturn.Trim();
-                    strReturn = strReturn.TrimEnd(',');
-                }
+                string strRX = @"AppInfo\.ClientType:\s*(\w+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strClientType = rxMatch.Groups[1].Value;
             }
             else if (g_strFileType == "maindiag")
             {
-                iSearch = TextPos(g_allText, "AppInfo.ClientType", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch + 4, 8);
-                    strReturn = strReturn.Trim();
-                    strReturn = strReturn.TrimEnd(',', '"');
-                }
+                string strRX = @"""AppInfo\.ClientType""\s*:\s*""(\w+)""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strClientType = rxMatch.Groups[1].Value;
             }
 
-            return strReturn;
+            if (string.IsNullOrEmpty(strClientType))
+                strClientType = "Not found";
+
+            return strClientType;
         } // GetClientType
 
         public static string GetVdiMode()
         {
-            string strVdiNum = "Not found";
+            string strVdiNum = "";
             string strVdiModeText;
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strVDI = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "vdiMode:", 0, true);
-                if (iSearch != -1)
-                {
-                    strVdiNum = g_allText.Substring(iSearch + 1, 4);
-                    strVdiNum = strVdiNum.TrimEnd('e', 'v', 'S', 'c', 'p');
-                    strVdiNum = strVdiNum.Trim();
-                    strVdiNum = strVdiNum.TrimEnd(',');
-                }
+                string strRX = @"vdiMode:\s*(\d+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strVdiNum = rxMatch.Groups[1].Value;
+
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "vdiMode\":", 0, false);
-                if (iSearch != -1)
-                {
-                    strVdiNum = g_allText.Substring(iSearch + 2, 4);
-                    strVdiNum = strVdiNum.Trim();
-                    strVdiNum = strVdiNum.TrimEnd(',', '"');
-                }
+                string strRX = @"""vdiMode"":\s*""(\d+)""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strVdiNum = rxMatch.Groups[1].Value;
             }
-            
-            if (!strVdiNum.Contains("Not found"))
+
+            if (!string.IsNullOrEmpty(strVdiNum))
             {
                 strVdiModeText = GetVdiModeDecoded(strVdiNum);
-                strReturn = strVdiNum + ": " + strVdiModeText;
+                strVDI = strVdiNum + ": " + strVdiModeText;
             }
+            else
+                strVDI = "Not found";
 
-            return strReturn;
+            return strVDI;
         } // GetVdiMode
 
         public static string GetOSVer()
         {
-            string strReturn = "Not found";
-            string strOSVer = "Not found";
+            string strOSVer = "";
             string strOSBuild = "";
             string strOSInfo;
-            int iSearch = 0;
-            int iRet = 0;
+            string strOS = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "osversion", 0, true);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 1;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    strOSVer = g_allText.Substring(iSearch, iRet - iSearch);
-                    strOSVer = strOSVer.Trim();
-                    strOSVer = strOSVer.TrimEnd('"', ',', '\n');
-                    strOSVer = strOSVer.Trim(); 
-                }
+                string strRX = @"osversion\s+(\d+\.\d+(\.\d+)*)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strOSVer = rxMatch.Groups[1].Value;
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "osversion", 0, false);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 4;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    strOSVer = g_allText.Substring(iSearch, iRet - iSearch);
-                    strOSVer = strOSVer.Trim();
-                    strOSVer = strOSVer.TrimEnd('"', ',', '\n');
-                    strOSVer = strOSVer.Trim();
-                }
+                string strRX = @"""osversion"":\s*""(\d+\.\d+(\.\d+)*)""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strOSVer = rxMatch.Groups[1].Value;
             }
-            if (strOSVer != "Not found")
+
+            if (!string.IsNullOrEmpty(strOSVer))
             {
                 strOSBuild = GetOSBuild(strOSVer);
                 strOSInfo = GetOSVerInfo(strOSBuild);
 
-                strReturn = strOSVer + " - " + strOSInfo;
+                strOS = strOSVer + " - " + strOSInfo;
             }
-        
-            return strReturn;
+            else
+                strOS = "Not found";
+
+            return strOS;
         } // GetOSVer
 
+        // Get the OS build number so we can look it up and get something more useful
         private static string GetOSBuild(string strOSVer)
         {
             string strOSBuild = "";
@@ -396,203 +370,197 @@ namespace TATPlugin_Teams
             }
 
             return strOSBuild;
-        }
+        } // GetOSBuild
 
+        // Get the timezone for this user location
         public static string GetTimezone()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
+            string strTZ = "";
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "GMT", 0, false);
-                if (iSearch != -1)
-                {
-                    strReturn = g_allText.Substring(iSearch - 3, 8);
-                }
+                string strRX = @"UserInfo\.TimeZone:\s*([+-]\d{2}:\d{2})";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strTZ = rxMatch.Groups[1].Value;
             }
-            else if (g_strFileType == "maindiag")
+            else if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "timezone\":", 0, false);
-                if (iSearch != -1)
-                {
-                    string strTZ = "";
-                    strTZ = g_allText.Substring(iSearch + 1, 3);
-                    strTZ = strTZ.Trim('\n');
-                    strTZ = strTZ.Trim(',');
+                string strRX = @"""timezone"":\s*(-?\d+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strTZ = rxMatch.Groups[1].Value;
+            }
 
+            if (!string.IsNullOrEmpty(strTZ))
+            {
+                if (strTZ.Length < 4)
+                {
                     if (strTZ.Contains("-"))
                     {
-                        if (strTZ.Length == 2)
-                        {
-                            strTZ = strTZ.Remove(0, 1);
-                            strTZ = "-0" + strTZ;
-                        }
-                        strTZ = "GMT" + strTZ + "00";
+                        strTZ = "GMT " + strTZ + ":00";
                     }
                     else
                     {
-                        if (strTZ.Length == 1)
-                        {
-                            strTZ = "0" + strTZ;
-                        }
-                        strTZ = "GMT+" + strTZ + "00";
+                        strTZ = "GMT +" + strTZ + ":00";
                     }
-                    strReturn = strTZ;
+                }
+                else
+                {
+                    if (strTZ.Contains("-"))
+                    {
+                        strTZ = "GMT " + strTZ;
+                    }
+                    else
+                    {
+                        strTZ = "GMT " + strTZ;
+                    }
                 }
             }
+            else
+            {
+                strTZ = "Not found";
+            }
 
-            return strReturn;
+            return strTZ;
         } // GetTimezone
 
-        public static string GetHostname()
-        {
-            string strReturn = "Not found";
-            int iSearch = 0;
-            int iRet = 0;
-
-            if (g_strFileType == "maindiag")
-            {
-                iSearch = TextPos(g_allText, "hostname\":", 0, false);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 2;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    string strHost = g_allText.Substring(iSearch, iRet - iSearch);
-                    strHost = strHost.Trim();
-                    strHost = strHost.TrimEnd(',', '\"');
-                    strReturn = strHost;
-                }
-            }
-
-            return strReturn;
-        } // GetHostname
-
+        // Get local IP Address for this user's machine
         public static string GetIPAddr()
         {
-            string strReturn = "Not found";
             string strIPAddr = "";
-            int iSearch = 0;
-            int iRet = 0;
-            int iComma = 0;
 
-            if (g_strFileType == "mainlog")
+            if (g_strFileType == "mainlog") // logs.txt
             {
-                iSearch = TextPos(g_allText, "ipaddr\":", 0, false);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 1;
-                    iComma = g_allText.IndexOf(',', iSearch);
-                    strIPAddr = g_allText.Substring(iSearch, iComma - iSearch);
-                    strIPAddr = strIPAddr.Trim();
-                    strIPAddr = strIPAddr.TrimEnd(',', '\"');
-                    strReturn = strIPAddr;
-                }
+                string strRX = @"""ipaddr"":""(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strIPAddr = rxMatch.Groups[1].Value;
             }
 
-            if (g_strFileType == "maindiag")
+            if (g_strFileType == "maindiag") // main web log
             {
-                iSearch = TextPos(g_allText, "ipaddr\":", 0, false);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 2;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    strIPAddr = g_allText.Substring(iSearch, iRet - iSearch);
-                    strIPAddr = strIPAddr.Trim();
-                    strIPAddr = strIPAddr.TrimEnd(',', '\"');
-                    strReturn = strIPAddr;
-                }
+                string strRX = @"""ipaddr"":\s*""(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strIPAddr = rxMatch.Groups[1].Value;
             }
 
-            return strReturn;
+            if (string.IsNullOrEmpty(strIPAddr))
+                strIPAddr = "Not found";
+
+            return strIPAddr;
         } // GetIPAddr
 
-        public static string GetDeviceInfo()
+        // Get the machine's hostname / machine name
+        public static string GetHostname()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
-            int iRet = 0;
+            string strHost = "";
 
             if (g_strFileType == "maindiag")
             {
-                iSearch = TextPos(g_allText, "DeviceInfo.SystemManufacturer", 0, false);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 4;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    string strMaker = g_allText.Substring(iSearch, iRet - iSearch);
-                    strMaker = strMaker.Trim();
-                    strMaker = strMaker.TrimEnd(',', '\"');
-                    strReturn = strMaker;
-                }
+                string strRX = @"""hostname"":\s*""([^""]+)""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strHost = rxMatch.Groups[1].Value;
+            }
 
-                iSearch = TextPos(g_allText, "DeviceInfo.SystemProductName", 0, false);
-                if (iSearch != -1)
+            if (string.IsNullOrEmpty(strHost))
+                strHost = "Not found";
+
+            return strHost;
+        } // GetHostname
+
+        // Get info about the device/machine
+        public static string GetDeviceInfo()
+        {
+            string strOEM = "";
+            string strSystem = "";
+            string strSysInfo = "";
+
+            if (g_strFileType == "maindiag")
+            {
+                string strRX = @"""DeviceInfo\.SystemManufacturer"":\s*""([^""]+)""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strOEM = rxMatch.Groups[1].Value;
+
+                strRX = @"""DeviceInfo\.SystemProductName"":\s*""([^""]+)""";
+                rxMatch = Regex.Match(g_allText, strRX);
+                strSystem = rxMatch.Groups[1].Value;
+            }
+
+            if (!string.IsNullOrEmpty(strOEM))
+            {
+                if (!string.IsNullOrEmpty(strSystem))
                 {
-                    iSearch = iSearch + 4;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    string strMachine = g_allText.Substring(iSearch, iRet - iSearch);
-                    strMachine = strMachine.Trim();
-                    strMachine = strMachine.TrimEnd(',', '\"');
-                    strReturn += ", " + strMachine;
+                    strSysInfo = strOEM + ", " + strSystem;
+                }
+                else
+                {
+                    strSysInfo = strOEM + " - System device info was not found.";
                 }
             }
-            return strReturn;
+            else
+                strSysInfo = "Not found";
+
+            return strSysInfo;
         }
 
         public static string GetCPU()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
-            int iRet = 0;
+            string strCPU = "";
+            string strCores = "";
+            string strCPUInfo = "";
 
             if (g_strFileType == "maindiag")
             {
-                iSearch = TextPos(g_allText, "cpumodel", 0, false);
-                if (iSearch != -1)
-                {
-                    iSearch = iSearch + 4;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    string strCPU = g_allText.Substring(iSearch, iRet - iSearch);
-                    strCPU = strCPU.Trim();
-                    strCPU = strCPU.TrimEnd(',', '\"');
-                    strReturn = strCPU;
+                string strRX = @"""cpumodel"":\s*""([^""]+)""";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strCPU = rxMatch.Groups[1].Value;
 
-                    iSearch = TextPos(g_allText, "cores\":", 0, false);
-                    if (iSearch != -1)
-                    {
-                        string strCores = g_allText.Substring(iSearch, 3);
-                        strCores = strCores.Trim();
-                        strCores = strCores.TrimEnd(',', '\n');
-                        strReturn += ", " + strCores + " cores";
-                    }
-                }
+                strRX = @"""cores"":\s*(\d+)";
+                rxMatch = Regex.Match(g_allText, strRX);
+                strCores = rxMatch.Groups[1].Value;
             }
 
-            return strReturn;
+            if (!string.IsNullOrEmpty(strCPU))
+            {
+                if (!string.IsNullOrEmpty(strCores))
+                {
+                    strCPUInfo = strCPU + ", " + strCores + " cores";
+                }
+                else
+                {
+                    strCPUInfo = strCPU;
+                }
+            }
+            else
+                strCPUInfo = "Not found";
+
+            return strCPUInfo;
         } // GetCPU
 
+        // Get Memory installed in the machine
         public static string GetMem()
         {
-            string strReturn = "Not found";
-            int iSearch = 0;
-            int iRet = 0;
+            string strMem = "";
+            string strConvMem = "";
 
             if (g_strFileType == "maindiag")
             {
-                iSearch = TextPos(g_allText, "totalMemory", 0, false);
-                if (iSearch != -1)
+                string strRX = @"""totalMemory"":\s*(\d+)";
+                Match rxMatch = Regex.Match(g_allText, strRX);
+                strMem = rxMatch.Groups[1].Value;
+
+                if (!string.IsNullOrEmpty(strMem))
                 {
-                    iSearch = iSearch + 3;
-                    iRet = g_allText.IndexOf('\n', iSearch);
-                    string strMem = g_allText.Substring(iSearch, iRet - iSearch);
-                    strMem = strMem.Trim();
-                    strMem = strMem.TrimEnd(',', '\"');
-                    strReturn = strMem;
+                    double iMem = double.Parse(strMem);
+                    if (iMem > 0)
+                    {
+                        strConvMem = Bytes2GBs(iMem);
+                        strConvMem = strMem + ": " + strConvMem;
+                    }
                 }
+                else
+                    strConvMem = "Not found";
             }
 
-            return strReturn;
+            return strConvMem;
         }
 
         public static void GetCallIDs()
@@ -778,10 +746,12 @@ namespace TATPlugin_Teams
         public static string GetLogDateTimes()
         {
             string strReturn = "";
-            int iSearch = 0;
             string strStart = "";
             string strEnd = "";
-
+            string strRxLogsTxt = @"(\w{3}\s\d+\s\d{4}\s\d{2}:\d{2}:\d{2})\s"; // Mar 14 2023 14:00:58
+            string strRxRest = @"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)"; // 2023-03-14T18:01:41.146Z
+            string strRxMedia = @"(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d{3})\s"; // 2023-01-20 14:59:38.163 (BRB/Logjoint decoded)
+            string strDTNow = GetCurrentDT();
 
             if (g_strFileType == "mainlog")
             {
@@ -789,8 +759,12 @@ namespace TATPlugin_Teams
                 {
                     if (strLine.Contains("GMT"))
                     {
-                        iSearch = TextPos(strLine, "<", 0, false);
-                        strStart = strLine.Substring(0, iSearch-2);
+                        Match rxDT = Regex.Match(strLine, strRxLogsTxt);
+                        if (rxDT.Success)
+                        {
+                            strStart = rxDT.Groups[1].Value;
+                            strStart = ConvertDateTime(strStart);
+                        }
                         break;
                     }
                 }
@@ -799,8 +773,12 @@ namespace TATPlugin_Teams
                 {
                     if (strLine.Contains("GMT"))
                     {
-                        iSearch = TextPos(strLine, "<", 0, false);
-                        strEnd = strLine.Substring(0, iSearch-2);
+                        Match rxDT = Regex.Match(strLine, strRxLogsTxt);
+                        if (rxDT.Success)
+                        {
+                            strEnd = rxDT.Groups[1].Value;
+                            strEnd = ConvertDateTime(strEnd);
+                        }
                         break;
                     }
                 }
@@ -811,10 +789,12 @@ namespace TATPlugin_Teams
                 {
                     if (strLine.Contains("Z Inf") || strLine.Contains("Z War") || strLine.Contains("Z Err"))
                     {
-                        iSearch = TextPos(strLine, "Z", 0, false);
-                        strStart = strLine.Substring(0, iSearch-1);
-                        strStart = strStart.Replace('T', ' ');
-                        strStart = strStart + " GMT";
+                        Match rxDT = Regex.Match(strLine, strRxRest);
+                        if (rxDT.Success)
+                        {
+                            strStart = rxDT.Groups[1].Value;
+                            strStart = ConvertDateTime(strStart);
+                        }
                         break;
                     }
                 }
@@ -823,10 +803,12 @@ namespace TATPlugin_Teams
                 {
                     if (strLine.Contains("Z Inf") || strLine.Contains("Z War") || strLine.Contains("Z Err"))
                     {
-                        iSearch = TextPos(strLine, "Z", 0, false);
-                        strEnd = strLine.Substring(0, iSearch-1);
-                        strEnd = strEnd.Replace('T', ' ');
-                        strEnd = strEnd + " GMT";
+                        Match rxDT = Regex.Match(strLine, strRxRest);
+                        if (rxDT.Success)
+                        {
+                            strEnd = rxDT.Groups[1].Value;
+                            strEnd = ConvertDateTime(strEnd);
+                        }
                         break;
                     }
                 }
@@ -839,17 +821,23 @@ namespace TATPlugin_Teams
                     // For BRB decoded file
                     if (strLine.Contains("[#") && strLine.Contains("-S]"))
                     {
-                        iSearch = TextPos(strLine, "[", 0, false);
-                        strStart = strLine.Substring(0, iSearch - 2);
-                        strStart = strStart + " GMT";
+                        Match rxDT = Regex.Match(strLine, strRxMedia);
+                        if (rxDT.Success)
+                        {
+                            strStart = rxDT.Groups[1].Value;
+                            strStart = ConvertDateTime(strStart);
+                        }
                         break;
                     }
                     // For Dev TAT decoded file
-                    else if (strLine.Contains("TL_INFO")|| strLine.Contains("TL_WARN") || strLine.Contains("TL_ERROR") || strLine.Contains("TL_FATAL"))
+                    else if (strLine.Contains("TL_INFO") || strLine.Contains("TL_WARN") || strLine.Contains("TL_ERROR") || strLine.Contains("TL_FATAL"))
                     {
-                        iSearch = TextPos(strLine, "  ", 10, false);
-                        strStart = strLine.Substring(10, iSearch - 12);
-                        strStart = strStart + " GMT";
+                        Match rxDT = Regex.Match(strLine, strRxRest);
+                        if (rxDT.Success)
+                        {
+                            strStart = rxDT.Groups[1].Value;
+                            strStart = ConvertDateTime(strStart);
+                        }
                         break;
                     }
                 }
@@ -859,26 +847,68 @@ namespace TATPlugin_Teams
                     // For BRB decoded file
                     if (strLine.Contains("[#") && strLine.Contains("-S]"))
                     {
-                        iSearch = TextPos(strLine, "[", 0, false);
-                        strEnd = strLine.Substring(0, iSearch - 2);
-                        strEnd = strEnd + " GMT";
+                        Match rxDT = Regex.Match(strLine, strRxMedia);
+                        if (rxDT.Success)
+                        {
+                            strEnd = rxDT.Groups[1].Value;
+                            strEnd = ConvertDateTime(strEnd);
+                        }
                         break;
                     }
                     // For Dev TAT decoded file
                     else if (strLine.Contains("TL_INFO") || strLine.Contains("TL_WARN") || strLine.Contains("TL_ERROR") || strLine.Contains("TL_FATAL"))
                     {
-                        iSearch = TextPos(strLine, "  ", 10, false);
-                        strEnd = strLine.Substring(10, iSearch - 12);
-                        strEnd = strEnd + " GMT";
+                        Match rxDT = Regex.Match(strLine, strRxRest);
+                        if (rxDT.Success)
+                        {
+                            strEnd = rxDT.Groups[1].Value;
+                            strEnd = ConvertDateTime(strEnd);
+                        }
                         break;
                     }
                 }
             }
 
+            //TODO: Compare "Now" to Ending Date-Time and flag if over 20 days.
+
             strReturn = strStart + " to " + strEnd;
 
             return strReturn;
+
         } // GetLogDateTimes
+
+        // Get Current date-time
+        public static string GetCurrentDT()
+        {
+            string strRet = "";
+            DateTime dt = DateTime.Now.ToUniversalTime();
+            strRet = dt.ToString();
+            return strRet;
+        }
+
+        // Make all DateTime values the same so we can see where things line up etc.
+        public static string ConvertDateTime(string strDT)
+        {
+            string strRet = "";
+
+            if (g_strFileType == "mainlog")
+            {
+                string strConvDT = DateTime.Parse(strDT).ToString();
+                strConvDT = strConvDT + " User Local Time";
+                strRet = strConvDT;
+            }
+            else
+            {
+                strDT = strDT.Replace('T', ' ');
+                strDT = strDT.TrimEnd('Z');
+                string strConvDT = DateTime.Parse(strDT).ToString();
+                strConvDT = strConvDT + " GMT";
+                strRet = strConvDT;
+            }
+
+            return strRet;
+        }
+
 
         // For getting the Date-Time for a CallID. Hacky.
         public static string GetDateTime(int iPos)

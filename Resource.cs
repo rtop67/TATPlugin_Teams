@@ -1,12 +1,39 @@
 ﻿using System;
-
+using System.Runtime.Remoting;
+using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
+using static TATPlugin_Teams.Teams;
 
 namespace TATPlugin_Teams
 {
     public class Resource
     {
 
-        /*
+        // Put info about this Parsing DLL at the top of the text in TAT
+        public static string GetHeaderInfo()
+        {
+            string strSeparator = "================================================";
+            string strDLLInfo = "Teams Plugin for TextAnalysisTool";
+            string strSupport = "Currently will parse:"; // Logs.txt, Main Diagnostic log, Calling Diagnostic log, Experience Renderer log and MediaStack log"
+            string strFiles = "Logs.txt" + "\n" + "MSTeams Diagnostics Log [Date-Time].txt" + "\n" + "MSTeams Diagnostics Log [Date-Time]_Calling.txt"
+                               + "\n" + "MSTeams Diagnostics Log [Date-Time]_Experience_Renderer.txt" + "\n" + "Decoded Media.msrtc-xxxxx Log";
+
+            string strHeader = strSeparator + "\n" + strDLLInfo + "\n" + "\n" + strSupport + "\n" + strFiles + "\n" + strSeparator;
+
+            return strHeader;
+        }
+        // Well - this is the "footer" - but for all the stuff that gets placed at the top of the text for the file in question
+        public static string GetFooterText()
+        {
+            string strSeparator = "================================================";
+            string strFooterInfo = "Original file contents below";
+
+            string strFooter = strSeparator + "\n" + strFooterInfo + "\n" + strSeparator + "\r\n";
+
+            return strFooter;
+        }
+
+        /*  For parsing out VDI mode
             | **`vdiMode`**: | 2                      | 0                 | 2                | 0                            |
             | -------------- | ---------------------- | ----------------- | ---------------- | ---------------------------- |
             | **Meaning**    | **Provider**           | **AV Optimized**  | **Desktop Kind** | **Persistence of user data** |
@@ -44,6 +71,7 @@ namespace TATPlugin_Teams
             {"2", "Non Persistent" }
         };
 
+        // Get the full VDI info
         public static string GetVdiModeDecoded(string strMode)
         {
             string strDecoded = "";
@@ -62,6 +90,7 @@ namespace TATPlugin_Teams
             return strDecoded;
         }
 
+        //  For getting VDI info in above function
         public static string GetFromArray(string strIn, string[,] strArray)
         {
             string strOut = "";
@@ -80,7 +109,8 @@ namespace TATPlugin_Teams
             return strOut;
         }
 
-        public static string[,] rgOSVer = new string[70, 2]  // Will need updating as new OS builds release
+        // OS version info
+        public static string[,] rgOSVer = new string[74, 2]  // Will need updating as new OS builds release
         {
             {"10.15.0", "MacOS Catalina Released 10-7-2019" },
             {"10.15.1", "MacOS Catalina Released 10-29-2019" },
@@ -134,6 +164,10 @@ namespace TATPlugin_Teams
             {"13.1.0", "MacOS Ventura Released 12-13-2022" },
             {"13.2.0", "MacOS Ventura Released 1-23-2023" },
             {"13.2.1", "MacOS Ventura Released 2-13-2023" },
+            {"13.3", "MacOS Ventura Released 3-27-2023" },
+            {"13.4", "MacOS Ventura Released 5-18-2023" },
+            {"13.4.1", "MacOS Ventura Released 6-21-2023" },
+            {"13.5", "MacOS Ventura Released 7-24-2023" },
             {"9200", "Windows 8 or Windows Server 2012" },
             {"9600", "Windows 8.1 or Windows Server 2012 R2" },
             {"10240", "Win10 TH1 Released 7-29-2015" },
@@ -154,6 +188,7 @@ namespace TATPlugin_Teams
             {"22621", "Win11 22H2 Released 9-20-2022" }
         };
 
+        // Get OS version
         public static string GetOSVerInfo(string strBuild) // To get the info above...
         {
 
@@ -171,7 +206,8 @@ namespace TATPlugin_Teams
             return strInfo;
         }
 
-        public static string[,] rgCallState = new string[13, 2]
+        // Call state info
+        public static string[,] rgCallState = new string[26, 2]
         {
             {"0", "None" },
             {"1", "Notified" },
@@ -185,9 +221,23 @@ namespace TATPlugin_Teams
             {"9", "EarlyMedia" },
             {"10", "InLobby" },
             {"11", "Preheating" },
-            {"12", "Preheated" }
+            {"12", "Preheated" },
+            {"13", "Staging" },
+            {"14", "Nego Encryption" },
+            {"15", "Lobby Nego Encryption" },
+            {"1000", "Reconnecting" },
+            {"1001", "Transferring" },
+            {"1002", "TransferFailed" },
+            {"1003", "TransferSucceeded" },
+            {"1004", "Escalating" },
+            {"1005", "EscalationFailed" },
+            {"1006", "EscalationSucceeded" },
+            {"1007", "Parking" },
+            {"1008", "ParkSucceeded" },
+            {"1009", "ParkFailed" }
         };
 
+        // get call state text that goes with number
         public static string GetCallState(string strInt)
         {
             string strCallState = strInt;
@@ -205,6 +255,27 @@ namespace TATPlugin_Teams
             return strCallState;
         }
 
+        // get call state number that goes with text
+        public static string GetCallStateNum(string strState)
+        {
+            string strCallStateNum = strState;
+            int upperBound = rgCallState.GetUpperBound(0);
+            rgCallState.GetUpperBound(1);
+            for (int i = 0; i <= upperBound; i++)
+            {
+                if (strState == rgCallState[i, 1])
+                {
+                    strCallStateNum = rgCallState[i, 0];
+                    break;
+                }
+            }
+
+            strCallStateNum = strCallStateNum + " - " + strState;
+
+            return strCallStateNum;
+        }
+
+        // Call termination reason info
         public static string[,] rgTerminateReasons = new string[70, 2]
         {
             {"0", "Undefined" },
@@ -279,6 +350,7 @@ namespace TATPlugin_Teams
             {"69", "BroadcastLimitReached" }
         };
 
+        // get the call termination reason
         public static string GetTerminateReason(string strInt)
         {
             string strTermReason = strInt;
@@ -296,7 +368,34 @@ namespace TATPlugin_Teams
             return strTermReason;
         }
 
-        public static string[,] rgFileType = new string[19, 2]  // Which Teams log is being loaded?
+        public static string[,] rgCallEndReason = new string[5, 2]
+        {
+            {"1", "Failed" },
+            {"2", "RemoteEnded" },
+            {"3", "Unanswered" },
+            {"4", "AnsweredElsewhere" },
+            {"5", "DeclinedElsewhere" }
+        };
+
+        public static string GetCallEndReason(string strInt)
+        {
+            string strCallEnd = strInt;
+            int upperBound = rgCallEndReason.GetUpperBound(0);
+            rgCallEndReason.GetUpperBound(1);
+            for (int i = 0; i <= upperBound; i++)
+            {
+                if (strInt == rgCallEndReason[i, 0])
+                {
+                    strCallEnd += " - " + rgCallEndReason[i, 1];
+                    break;
+                }
+            }
+
+            return strCallEnd;
+        }
+
+        // Teams Log Types
+        public static string[,] rgFileType = new string[19, 2] 
         {
             {"logs.txt", "mainlog" },
             {"old_logs_", "mainlog" },
@@ -319,10 +418,11 @@ namespace TATPlugin_Teams
             {"MSTeams Diagnostics", "maindiag" }
         };
 
-        public static string GetFileType(string strFile) // Function to get the above info so we know how to parse it.
+        // Get the file type so we will know what data to parse or try to parse out of it
+        public static string GetFileType(string strFile) 
         {
             string strFileType = "Invalid";
-            // if we already parsed the file it will have this in the file name - so don't process it
+            // if we already parsed the file it will have this in the file name - so don't re-process it
             if (strFile.Contains("-PARSED"))
             {
                 return strFileType;
@@ -346,6 +446,7 @@ namespace TATPlugin_Teams
             return strFileType;
         }
 
+        // For converting Unix date/time that is used in our logging > to a readable date/time in GMT
         public static string ConvertUnixTime(string strTime)
         {
             double unixTime = Double.Parse(strTime);
@@ -355,6 +456,7 @@ namespace TATPlugin_Teams
             return dt.ToString();
         }
 
+        // Convert Bytes per second to Megabits per second
         public static string Byteps2Mbps(int iBps)
         {
             int iMbps = iBps / 125000;
@@ -363,6 +465,7 @@ namespace TATPlugin_Teams
             return strMbps;
         }
 
+        // Convert Bits per second to Megabits per second
         public static string Bitsps2Mbps(int ibps)
         {
             int iMbps = ibps / 1000000;
@@ -371,28 +474,35 @@ namespace TATPlugin_Teams
             return strMbps;
         }
 
-        public static string GetHeaderInfo()
+        //Convert b-CT: Bandwidth output to Mbps
+        public static string BW2Mbps(string strBW)
         {
-            string strSeparator = "================================================";
-            string strDLLInfo = "Teams Plugin for TextAnalysisTool";
-            string strSupport = "Currently works on:"; // Logs.txt, Main Diagnostic log, Calling Diagnostic log, Experience Renderer log and MediaStack log"
-            string strFiles = "Logs.txt" + "\n" + "MSTeams Diagnostics Log [Date-Time].txt" + "\n" + "MSTeams Diagnostics Log [Date-Time]_Calling.txt" 
-                               + "\n" + "MSTeams Diagnostics Log [Date-Time]_Experience_Renderer.txt" + "\n" + "Decoded Media.msrtc-xxxxx Log";
-            
-            string strHeader = strSeparator + "\n" + strDLLInfo + "\n" + "\n" + strSupport + "\n" + strFiles + "\n" + strSeparator;
-
-            return strHeader;
+            double iBW = Int32.Parse(strBW);
+            double iMbps = iBW / 1000;
+            string strMbps = iMbps.ToString("N2");
+            strMbps = strBW + " == " + strMbps + " Mbps";
+            return strMbps;
         }
 
-        public static string GetFooterText()
+        //Convert Bytes to Gigabytes
+        public static string Bytes2GBs(double iBytes)
         {
-            string strSeparator = "================================================";
-            string strFooterInfo = "Original file contents below";
-
-            string strFooter = strSeparator + "\n" + strFooterInfo + "\n" + strSeparator + "\r\n";
-
-            return strFooter;
+            double iGB = Math.Round(iBytes / 1073741824, 2);
+            string strGBs = iGB.ToString();
+            strGBs = strGBs + " GB";
+            return strGBs;
         }
 
+        // add callid to global list if not there
+        public static void AddCallID(string strCallID)
+        {
+            if (!g_CallIDs.Contains(strCallID))
+            {
+                if (!strCallID.Contains("no-call"))
+                {
+                    g_CallIDs.Add(strCallID);
+                }
+            }
+        } // AddCallID
     }
 }
