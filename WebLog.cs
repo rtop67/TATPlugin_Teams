@@ -112,9 +112,7 @@ namespace TATPlugin_Teams
                             }
                         }
                     }
-
                 }
-                
                 g_WebLogLines.Add("");
             }
 
@@ -254,6 +252,7 @@ namespace TATPlugin_Teams
             // Gotta do this to get the date time parsed successfully
             strDT = strDT.Replace('T', ' ');
             strDT = strDT.TrimEnd('Z');
+            DateTime dtIn = DateTime.ParseExact(strDT, timeFmt, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
 
             if (g_CallData.Count > 0)
             {
@@ -266,7 +265,7 @@ namespace TATPlugin_Teams
                             return; // No need to log out the same ParticipantID for the CallID...
                         }
 
-                        if (entry.strProp == strProp && entry.strVal == strVal)
+                        if (entry.datetime == dtIn && entry.strProp == strProp && entry.strVal == strVal)
                         {
                             return; // Try to avoid duplicate entries - which happens...
                         }
@@ -277,7 +276,7 @@ namespace TATPlugin_Teams
             g_CallDataEntry callDataEntry = new g_CallDataEntry
             {
                 strID = strID,
-                datetime = DateTime.ParseExact(strDT, timeFmt, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal),
+                datetime = dtIn,
                 strProp = strProp,
                 strVal = strVal
             };
