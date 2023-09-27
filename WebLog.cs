@@ -231,7 +231,7 @@ namespace TATPlugin_Teams
                     strCCCode = mcCallEnd2[i].Groups[3].ToString();
                     strCCSubCode = mcCallEnd2[i].Groups[4].ToString();
 
-                    strLine = "Terminated Reason: " + strTRReason2 + ", CC Code: " + strCCCode + ", CC Subcode: " + strCCSubCode;
+                    strLine = strTRReason2 + ", CC Code: " + strCCCode + ", CC Subcode: " + strCCSubCode;
 
                     if (mcCallEnd2[i].Groups[5].ToString() != "undefined")
                     {

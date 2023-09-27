@@ -16,7 +16,7 @@ namespace TATPlugin_Teams
             string strDLLInfo = "Teams Plugin for TextAnalysisTool";
             string strSupport = "Currently will parse:"; // Logs.txt, Main Diagnostic log, Calling Diagnostic log, Experience Renderer log and MediaStack log"
             string strFiles = "Logs.txt" + "\n" + "MSTeams Diagnostics Log [Date-Time].txt" + "\n" + "MSTeams Diagnostics Log [Date-Time]_Calling.txt"
-                               + "\n" + "MSTeams Diagnostics Log [Date-Time]_Experience_Renderer.txt" + "\n" + "Decoded Media.msrtc-xxxxx Log";
+                               + "\n" + "MSTeams Diagnostics Log [Date-Time]_Experience_Renderer.txt";
 
             string strHeader = strSeparator + "\n" + strDLLInfo + "\n" + "\n" + strSupport + "\n" + strFiles + "\n" + strSeparator;
 
