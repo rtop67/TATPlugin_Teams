@@ -252,7 +252,7 @@ namespace TATPlugin_Teams
             // Gotta do this to get the date time parsed successfully
             strDT = strDT.Replace('T', ' ');
             strDT = strDT.TrimEnd('Z');
-            DateTime dtIn = DateTime.ParseExact(strDT, timeFmt, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            DateTime dtIn = DateTime.ParseExact(strDT, timeFmt, CultureInfo.InvariantCulture, DateTimeStyles.None);
 
             if (g_CallData.Count > 0)
             {

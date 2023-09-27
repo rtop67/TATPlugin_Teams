@@ -412,10 +412,10 @@ namespace TATPlugin_Teams
             {"_meeting_intelligence", "meetinteldiag" },
             {"_sync", "syncdiag" },
             {"debug-", "skylib" },
-            {"Media.msrtc", "mediamsrtc" },
-            {"MediaAgent.msrtc", "mediamsrtc" },
+            {"Media.msrtc", "mediamsrtc" },  // disabled for now...
+            {"MediaAgent.msrtc", "mediamsrtc" }, // disabled for now...
             {"Teams.msrtc", "teamsmsrtc" },
-            {"MSTeams Diagnostics", "maindiag" }
+            {"MSTeams Diagnostics", "maindiag" } 
         };
 
         // Get the file type so we will know what data to parse or try to parse out of it
@@ -449,11 +449,15 @@ namespace TATPlugin_Teams
         // For converting Unix date/time that is used in our logging > to a readable date/time in GMT
         public static string ConvertUnixTime(string strTime)
         {
-            double unixTime = Double.Parse(strTime);
-            DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            string strRet = "";
+            long unixTime = long.Parse(strTime);
+            DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
             dt = dt.AddMilliseconds(unixTime);
+            strRet = dt.ToString();
+            // strRet = DateTime.Parse(strRet).ToString();
+            strRet = strRet + " GMT";
 
-            return dt.ToString();
+            return strRet;
         }
 
         // Convert Bytes per second to Megabits per second

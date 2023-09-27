@@ -24,7 +24,7 @@ namespace TATPlugin_Teams
             g_MediaLines.Add(strDateTime += GetLogDateTimes());
             g_MediaLines.Add("");
 
-            GetCallIDs();
+            // !!!!!  NEED TO ADD GETTING CALLIDs HERE
             if (g_CallIDs.Count > 0)
             {
                 g_MediaLines.Add("CallIDs Found:");

@@ -17,7 +17,7 @@ namespace TATPlugin_Teams
             string strDateTime = "This log covers: ";
             string strTZ = "Timezone: ";
 
-            GetCallIDs();
+            // !!!!!! NEED TO ADD GETTING CALLIDs HERE
             GetCrashLines();
             
 

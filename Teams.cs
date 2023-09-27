@@ -47,7 +47,7 @@ namespace TATPlugin_Teams
 
             g_strFileType = GetFileType(strFile);
 
-            if (g_strFileType == "mainlog" || g_strFileType == "maindiag" || g_strFileType == "rendererdiag" || g_strFileType == "callingdiag" || g_strFileType == "mediamsrtc")
+            if (g_strFileType == "mainlog" || g_strFileType == "maindiag" || g_strFileType == "rendererdiag" || g_strFileType == "callingdiag")
                 g_bSupported = true;
 
             return g_bSupported;

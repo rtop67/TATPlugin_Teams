@@ -563,153 +563,7 @@ namespace TATPlugin_Teams
             return strConvMem;
         }
 
-        public static void GetCallIDs()
-        {
-            int iSearch = 0;
-            int iFirstPos = 0;
-            //int iRet = 0;
-            string strCallID = "";
-
-            if (g_strFileType == "maindiag")
-            {
-                iSearch = TextPos(g_allText, "callId =", 0, false);
-                while (iSearch != -1)
-                {
-                    iFirstPos = iSearch;
-                    iSearch = iSearch + 1;
-                    strCallID = g_allText.Substring(iSearch, 36);
-                    if (!g_CallIDs.Contains(strCallID))
-                    {
-                        if (!strCallID.Contains("no-call"))
-                        {
-                            g_CallIDs.Add(strCallID);
-                        }
-                    }
-                    iSearch = TextPos(g_allText, "callId =", iSearch + 1, false);
-                    if (iSearch <= iFirstPos)
-                        break;
-                }
-            }
-
-            if (g_strFileType == "callingdiag")
-            {
-                iSearch = TextPos(g_allText, "callId:", 0, false);
-                while (iSearch != -1)
-                {
-                    iFirstPos = iSearch;
-                    iSearch = iSearch + 1;
-                    strCallID = g_allText.Substring(iSearch, 36);
-
-                    if (strCallID.Contains(":"))
-                    {
-                        iSearch = TextPos(g_allText, "callId:", iSearch + 1, false);
-                        if (iSearch <= iFirstPos)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (!g_CallIDs.Contains(strCallID))
-                    {
-                        g_CallIDs.Add(strCallID);
-                    }
-
-                    iSearch = TextPos(g_allText, "callId:", iSearch + 1, false);
-                    if (iSearch <= iFirstPos)
-                        break;
-                }
-
-                iSearch = TextPos(g_allText, "\"callId\":", 0, false);
-                while (iSearch != -1)
-                {
-                    iFirstPos = iSearch;
-                    iSearch = iSearch + 2;
-                    strCallID = g_allText.Substring(iSearch, 36);
-
-                    if (strCallID.EndsWith("\""))
-                    {
-                        iSearch = iSearch - 1;
-                        strCallID = g_allText.Substring(iSearch, 36);
-                    }
-
-                    if (!g_CallIDs.Contains(strCallID))
-                    {
-                        g_CallIDs.Add(strCallID);
-                    }
-                    iSearch = TextPos(g_allText, "\"callId\":", iSearch + 1, false);
-                    if (iSearch <= iFirstPos)
-                        break;
-                }
-            }
-
-                if (g_strFileType == "rendererdiag")
-            {
-                iSearch = TextPos(g_allText, "\"callId\":", 0, false);
-                while (iSearch != -1)
-                {
-                    iFirstPos = iSearch;
-                    iSearch = iSearch + 2;
-                    strCallID = g_allText.Substring(iSearch, 36);
-                    if (!g_CallIDs.Contains(strCallID))
-                    {
-                        g_CallIDs.Add(strCallID);
-                    }
-                    iSearch = TextPos(g_allText, "\"callId\":", iSearch + 1, false);
-                    if (iSearch <= iFirstPos)
-                        break;
-                }
-            }
-
-            if (g_strFileType == "mediamsrtc")
-            {
-                iSearch = TextPos(g_allText, "enter, CallId:", 0, false);
-                while (iSearch != -1)
-                {
-                    iFirstPos = iSearch;
-                    iSearch = iSearch + 1;
-                    strCallID = g_allText.Substring(iSearch, 36);
-                    
-                    if (strCallID.Contains(",")) // sometimes it's blank and the first character would be a comma - or close to it anyway
-                    {
-                        iSearch = TextPos(g_allText, "enter, CallId:", iSearch + 1, false);
-                        if (iSearch <= iFirstPos)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                            
-                    }
-                    string strDateTime = GetDateTime(iSearch);
-                    string strCallIDDT = strCallID + " - " + strDateTime;
-                    bool bFound = false;
-
-                    foreach (string strItem in g_CallIDs)
-                    {
-                        if (strItem.Contains(strCallID))
-                        {
-                            bFound = true;
-                        }
-                    }
-
-                    if (bFound == false)
-                    {
-                        g_CallIDs.Add(strCallIDDT);
-                    }
-
-                    iSearch = TextPos(g_allText, "enter, CallId:", iSearch + 1, false);
-                    if (iSearch <= iFirstPos)
-                        break;
-                }
-            }
-        } // GetCallIDs
-
+        // Get crash info lines from logs.txt
         public static void GetCrashLines()
         {
             if (g_strFileType == "mainlog")
@@ -720,20 +574,6 @@ namespace TATPlugin_Teams
                     {
                         if (strLine.Contains("extraparameter to crashReporter:"))
                             break;
-                        if (!g_CrashLines.Contains(strLine))
-                        {
-                            g_CrashLines.Add(strLine);
-                        }
-                    }
-                }
-            }
-
-            if (g_strFileType == "maindiag" || g_strFileType == "rendererdiag")
-            {
-                foreach (string strLine in g_allLines)
-                {
-                    if (strLine.Contains("Z Err") && strLine.Contains("crash"))
-                    {
                         if (!g_CrashLines.Contains(strLine))
                         {
                             g_CrashLines.Add(strLine);
@@ -907,33 +747,7 @@ namespace TATPlugin_Teams
             }
 
             return strRet;
-        }
+        } // ConvertDateTime
 
-
-        // For getting the Date-Time for a CallID. Hacky.
-        public static string GetDateTime(int iPos)
-        {
-            iPos = iPos - 180;
-            int iStart = TextPos(g_allText, "202", iPos, false);
-            iStart = iStart - 2;
-            int iEnd = TextPos(g_allText, "[", iStart, false);
-            int iLength = iEnd - iStart;
-            iStart--;
-
-            string strDateTime = g_allText.Substring(iStart, iLength);
-
-            // TAT decoded file behaves differently than BRB decoded - so must do the below.
-            if (strDateTime.Contains("MEDIAMGR_API"))
-            {
-                int iSt = 0;
-                int iEn = TextPos(strDateTime, "  ", 12, false);
-                int iLen = (iEn - iSt);
-
-                strDateTime = strDateTime.Substring(iSt, iLen);
-            }
-
-
-            return strDateTime;
-        }
     }
 }
