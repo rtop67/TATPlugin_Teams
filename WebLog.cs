@@ -202,7 +202,7 @@ namespace TATPlugin_Teams
             string strRxCam0 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*create local video ([\w-]+).*for device name: (.*?)(?=\s+path)";  // get video name and video device
             string strRxCam1 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*videoStatusChanged isStreaming: (\w+) status: (\d+)"; // video name, is streaming? and status
             string strRxCam2 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*state changed -> (\d)";
-            string strRxCam3 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*stopVideo.*stop (\w+).*callVideoStop: (\w+)";
+            string strRxCam3 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*stopVideo.*stop (.*?)(?=\scallVideoStop).*callVideoStop: (\w+)";
 
             MatchCollection mcCam0 = Regex.Matches(g_allText, strRxCam0);
             MatchCollection mcCam1 = Regex.Matches(g_allText, strRxCam1);
@@ -259,7 +259,7 @@ namespace TATPlugin_Teams
                     strStreaming = mcCam3[i].Groups[3].ToString();
                     strStatus = mcCam3[i].Groups[4].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Video Status - ", "Video Name: " + strVidname + ", Streaming: Stop "+ strStreaming + ", Status: Call Video Stop = " + strStatus);
+                    AddCallDataEntry(strCallID, strDT, "Video Status - ", "Video Name: " + strVidname + ", Streaming: Stop " + strStreaming + ", Status: Call Video Stop = " + strStatus);
                 }
             }
         }
