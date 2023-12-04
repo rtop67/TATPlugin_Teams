@@ -16,3 +16,4 @@ C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.AssemblyInfo
 C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.csproj.CoreCompileInputs.cache
 C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.dll
 C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.pdb
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.sourcelink.json

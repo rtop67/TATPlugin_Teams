@@ -377,6 +377,7 @@ namespace TATPlugin_Teams
             {"5", "DeclinedElsewhere" }
         };
 
+        // Get Call end reason from above enum
         public static string GetCallEndReason(string strInt)
         {
             string strCallEnd = strInt;
@@ -392,6 +393,64 @@ namespace TATPlugin_Teams
             }
 
             return strCallEnd;
+        }
+
+        
+        public static string[,] rgVideoStatus = new string[8, 2]
+        {
+            {"0", "NotAvailable" },
+            {"1", "Available" },
+            {"2", "Starting" },
+            {"4", "Running" },
+            {"5", "Stopping" },
+            {"6", "Paused" },
+            {"7", "NotStarted" },
+            {"9", "None" }
+        };
+
+        // Get status of sending video from above enum
+        public static string GetVideoStatus(string strInt)
+        {
+            string strVidStatus = strInt;
+            int upperBound = rgCallEndReason.GetUpperBound(0);
+            rgCallEndReason.GetUpperBound(1);
+            for (int i = 0; i <= upperBound; i++)
+            {
+                if (strInt == rgVideoStatus[i, 0])
+                {
+                    strVidStatus += " - " + rgVideoStatus[i, 1];
+                    break;
+                }
+            }
+
+            return strVidStatus;
+        }
+
+        public static string[,] rgRecvVidStatus = new string[5, 2]
+        {
+            {"0", "Stopped" },
+            {"1", "Started" },
+            {"2", "Active" },
+            {"3", "Inactive" },
+            {"5", "Terminated" }
+        };
+
+        // Get status of receiving video from above enum
+        public static string GetRecvVideoStatus(string strInt)
+        {
+            string strRecvVidStatus = strInt;
+            int upperBound = rgCallEndReason.GetUpperBound(0);
+            rgCallEndReason.GetUpperBound(1);
+            for (int i = 0; i <= upperBound; i++)
+            {
+                if (strInt == rgRecvVidStatus[i, 0])
+                {
+                    strRecvVidStatus += " - " + rgRecvVidStatus[i, 1];
+                    break;
+                }
+            }
+
+            return strRecvVidStatus;
         }
 
         // Teams Log Types

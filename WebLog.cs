@@ -126,11 +126,11 @@ namespace TATPlugin_Teams
             File.WriteAllText(g_strParsedFile, strInfo + g_allText);
         }
 
-        // Try to find CallIDs with ParticipantID for this user, CallStates for each CallID, and Call End data
+        // Try to find CallID data with ParticipantID for this user, CallStates for each CallID, etc.
         public static void GetCallData()
         {
             string strCallID = "";
-            string strRxPartIDs = @"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+.*callId=([a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}).*participantId=([a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12})"; // Get CallID & ParticipantID
+            string strRxPartIDs = @"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+.*callId=([a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}).*threadId=([a-zA-Z0-9:_@.]+).*participantId=([a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12})"; // Get CallID MeetingID and ParticipantID
             string strRxCallStates = @"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+.*callId\s=\s(\S+).*state\s=\s(\w+),"; // gets date-time, callid, and state
 
             MatchCollection mcPartIDs = Regex.Matches(g_allText, strRxPartIDs);
@@ -142,12 +142,20 @@ namespace TATPlugin_Teams
                 {
                     string strDT = mcPartIDs[i].Groups[1].Value;
                     strCallID = mcPartIDs[i].Groups[2].Value;
-                    string strPartID = mcPartIDs[i].Groups[3].Value;
+                    string strMeetID = mcPartIDs[i].Groups[3].Value;
+                    string strPartID = mcPartIDs[i].Groups[4].Value;
 
                     AddCallID(strCallID); // Add the CallID to the list of found CallIDs in the log
 
                     // Put this in a list to be added to the WebLogLines later after sorting by date
                     AddCallDataEntry(strCallID, strDT, "ParticipantID", strPartID);
+                    if (strMeetID != "null")
+                    {
+                        if (!string.IsNullOrEmpty(strMeetID))
+                        {
+                            AddCallDataEntry(strCallID, strDT, "MeetingID", strMeetID);
+                        }
+                    }
 
                 }
             }
@@ -173,6 +181,7 @@ namespace TATPlugin_Teams
             {
                 foreach (string strID in g_CallIDs)
                 {
+                    GetVideoData(strID);
                     GetCallEnd(strID);
                 }
             }
@@ -180,6 +189,80 @@ namespace TATPlugin_Teams
             g_CallData.Sort(new DateTimeComparer()); // After adding entries, sort by DateTime for output to UI
 
         } // GetCallData
+
+        // Get data about starting and stopping video feeds
+        public static void GetVideoData(string strCallID)
+        {
+            string strDT = "";
+            string strDevice = "";
+            string strVidname = "";
+            string strStreaming = "";
+            string strStatus = "";
+
+            string strRxCam0 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*create local video ([\w-]+).*for device name: (.*?)(?=\s+path)";  // get video name and video device
+            string strRxCam1 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*videoStatusChanged isStreaming: (\w+) status: (\d+)"; // video name, is streaming? and status
+            string strRxCam2 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*state changed -> (\d)";
+            string strRxCam3 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*stopVideo.*stop (\w+).*callVideoStop: (\w+)";
+
+            MatchCollection mcCam0 = Regex.Matches(g_allText, strRxCam0);
+            MatchCollection mcCam1 = Regex.Matches(g_allText, strRxCam1);
+            MatchCollection mcCam2 = Regex.Matches(g_allText, strRxCam2);
+            MatchCollection mcCam3 = Regex.Matches(g_allText, strRxCam3);
+
+            if (mcCam0.Count > 0)
+            {
+                for (int i = mcCam0.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcCam0[i].Groups[1].ToString();
+                    strVidname = mcCam0[i].Groups[2].ToString();
+                    strDevice = mcCam0[i].Groups[3].ToString();
+
+                    AddCallDataEntry(strCallID, strDT, "Video Status - ", "Opening Camera. Video Name: " + strVidname + ", Device: " + strDevice);
+                }
+            }
+
+            if (mcCam1.Count > 0)
+            {
+                for (int i = mcCam1.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcCam1[i].Groups[1].ToString();
+                    strVidname = mcCam1[i].Groups[2].ToString();
+                    strStreaming = mcCam1[i].Groups[3].ToString();
+                    strStatus = mcCam1[i].Groups[4].ToString();
+
+                    strStatus = GetVideoStatus(strStatus);
+
+                    AddCallDataEntry(strCallID, strDT, "Video Status - ", "Video Name: " + strVidname + ", Streaming: " + strStreaming + ", Status: " + strStatus);
+                }
+            }
+
+            if (mcCam2.Count > 0)
+            {
+                for (int i = mcCam2.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcCam2[i].Groups[1].ToString();
+                    strVidname = mcCam2[i].Groups[2].ToString();
+                    strStatus = mcCam2[i].Groups[3].ToString();
+                    
+                    strStatus = GetVideoStatus(strStatus);
+
+                    AddCallDataEntry(strCallID, strDT, "Video Status - ", "Video Name: " + strVidname + ", Status: " + strStatus);
+                }
+            }
+
+            if (mcCam3.Count > 0)
+            {
+                for (int i = mcCam3.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcCam3[i].Groups[1].ToString();
+                    strVidname = mcCam3[i].Groups[2].ToString();
+                    strStreaming = mcCam3[i].Groups[3].ToString();
+                    strStatus = mcCam3[i].Groups[4].ToString();
+
+                    AddCallDataEntry(strCallID, strDT, "Video Status - ", "Video Name: " + strVidname + ", Streaming: Stop "+ strStreaming + ", Status: Call Video Stop = " + strStatus);
+                }
+            }
+        }
 
         // Try to get Terminate reason and other end-of-call info
         public static void GetCallEnd(string strCallID)

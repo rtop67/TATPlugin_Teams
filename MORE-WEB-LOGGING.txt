@@ -1,0 +1,302 @@
+
+
+(\d+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+Inf\s+callingService:\s+\[call\]\[createCall\]\[callId=([a-f0-9-]+)\]\[threadId=([a-zA-Z0-9:_@.]+)\]\[messageId=\d+\]\[participantId=([a-f0-9-]+)\]
+
+Sender:
+==========
+ 14 CallID: 83814f36-d870-4ded-a28b-95cd00fd5318
+ 15 ParticipantID: be399124-7be2-4e7d-8422-b41e336ea84a
+ 16 ConversationID: 19:meeting_NjRmNDA1OWQtNDI1Yi00YjNkLWExNjMtNGM1YmZiN2EzOGFi@thread.v2
+ 17 TenantID: ddb27ae9-e5ee-4b3d-916b-8845d2dfe51e
+ 18 Organizer ObjectID: 01baf1d4-2bab-40a0-816d-3e1f10ca076f
+ 19 9/22/2023 5:30:37 PM GMT Call State: 0 - None
+ 20 9/22/2023 5:30:37 PM GMT Call State: 8 - Observing
+ 21 9/22/2023 5:30:56 PM GMT Call State: 2 - Connecting
+ 22 9/22/2023 5:30:58 PM GMT Call State: 3 - Connected
+ 23 9/22/2023 5:34:55 PM GMT Call State: 6 - Disconnecting
+ 24 9/22/2023 5:34:55 PM GMT Call State: 7 - Disconnected
+ 25 Terminated Reason:  - Success
+
+   47 CallID: 83814f36-d870-4ded-a28b-95cd00fd5318
+   48 2023-09-22 17:30:37.855 GMT ParticipantID be399124-7be2-4e7d-8422-b41e336ea84a
+   49 2023-09-22 17:30:37.945 GMT Call State 0 - None
+   50 2023-09-22 17:30:37.975 GMT Call State 8 - Observing
+   51 2023-09-22 17:30:56.117 GMT Call State 2 - Connecting
+   52 2023-09-22 17:30:58.208 GMT Call State 3 - Connected
+   53 2023-09-22 17:34:55.792 GMT Call State 6 - Disconnecting
+   54 2023-09-22 17:34:55.843 GMT Terminated Reason  - Success
+   55 2023-09-22 17:34:55.846 GMT Call State 7 - Disconnected
+
+Call Start:
+--------------
+2023-09-22T17:30:37.864Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[0:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][0]/SlimCoreElectronPTZHandler constructor(). call.participantId=be399124-7be2-4e7d-8422-b41e336ea84a
+
+2023-09-22T17:30:37.946Z Inf    callingService: [call][createCall][callId=83814f36-d870-4ded-a28b-95cd00fd5318][threadId=19:meeting_NjRmNDA1OWQtNDI1Yi00YjNkLWExNjMtNGM1YmZiN2EzOGFi@thread.v2][messageId=0][participantId=be399124-7be2-4e7d-8422-b41e336ea84a][teamsCallId=null][isScreenshareOnly=undefined]
+^^^ CallID, ParticipantID, and MeetingID
+
+
+Media connected:
+-----------------
+2023-09-22T17:31:07.800Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/ICallParticipant[8:u3][0][106] Updating endpointDetails: [{"participantId":"fa93d515-aa2a-4780-855a-b74644b98b05","endpointId":"d799b3a2-ffff-ffff-4d5f-2a85e024ef12","clientVersion":"CallSignalingAgent (27/1.6.00.22378//;release_verif_delivery/onthefly/ryturn/20230622T224410Z/20230623T022744Z.2023.25.01.11;releases/CL2023.R25)","mediaStream...
+
+^^^ CallID, other/remote ParticipantID 
+
+Start Camera:
+--------------
+2023-09-22T17:31:21.517Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][_StartLocalVideo]API called, 
+2023-09-22T17:31:21.522Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0] _startVideoStream causeId: ea3003a9 create local video main-video for device name: HD Webcam eMeet C960 path: \\?\usb#vid_328f&pid_003f&mi_00#7&124b7a38&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global
+2023-09-22T17:31:21.531Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] startVideo causeId: ea3003a9 start local video successful
+
+
+Preview:
+-----------
+2023-09-22T17:31:21.531Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] startVideo causeId: ea3003a9 start local video successful
+
+2023-09-22T17:31:22.274Z Inf    compositorManager: [updateCompositorLayout] cId=local-preview-b6b8229c-c125-4b2a-ba48-243f686fbaf5-e1f7d5b8-d412-4a89-b03d-04b344a2822a, size=241x133, offset=1085x694, props=[{"id":0,"properties":{"mediaSourceId":0,"area":{"x":0,"y":0,"width":1,"height":1},"spriteType":0,"mirror":true,"participantId":"preview"}}]
+
+
+
+
+
+
+
+Streaming:
+-------------
+2023-09-22T17:31:24.128Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] videoStatusChanged isStreaming: true status: 4
+enum class VideoStatus
+{
+   NotAvailable = 0, 
+   Available = 1, 
+   Starting = 2, 
+   Running = 4, 
+   Stopping = 5, 
+   Paused = 6, 
+   NotStarted = 7, 
+   None = 9, 
+};
+
+2023-09-22T17:31:24.128Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0] isStreaming changed to: true
+
+
+
+
+Stopping video:
+------------------
+2023-09-22T17:34:48.061Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ef2c37fc][StopVideo]API called, 
+2023-09-22T17:34:48.068Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[ef2c37fc][StopVideo] Promise executing: stopVideo: stopping localVideo
+2023-09-22T17:34:48.069Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0] isStreaming changed to: false
+
+
+
+
+=========================================================================================================================================================================================================
+ 2062 2023-09-22T17:31:15.426Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: DeviceManager/LocalVideoPreview[0][camera][0] _startVideo causeId: 4ffd1fc7 will start video preview now for device name: HD Webcam eMeet C960 path: \\?\usb#vid_328f&pid_003f&mi_00#7&124b7a38&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global
+
+ 2051 2023-09-22T17:31:15.436Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: DeviceManager/[4ffd1fc7][waitForVideoObjectState[107]] state changed -> 4 (Running)
+ 2054 2023-09-22T17:31:15.433Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: DeviceManager/[4ffd1fc7][waitForVideoObjectState[107]] state changed -> 1 (Available)
+ 2059 2023-09-22T17:31:15.430Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: DeviceManager/[4ffd1fc7][waitForVideoObjectState[107]] state changed -> 1 (Available)
+
+ 1949 2023-09-22T17:31:21.518Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3] check call mode currentMode is 1 operationName is _StartLocalVideo
+ 1950 2023-09-22T17:31:21.518Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][_StartLocalVideo] executing operation...
+ 1951 2023-09-22T17:31:21.518Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][_StartLocalVideo][creating...]
+ 1952 2023-09-22T17:31:21.517Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][_StartLocalVideo]API called, 
+ 1954 2023-09-22T17:31:21.511Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][StartVideo] executing operation...
+ 1955 2023-09-22T17:31:21.511Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][StartVideo][creating...]
+ 1957 2023-09-22T17:31:21.508Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][StartVideo]API called, 
+
+ 1931 2023-09-22T17:31:21.534Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][StartVideo]resolved, result=void
+ 1932 2023-09-22T17:31:21.534Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][StartVideo] execution succeeded, result=void, time=23
+ 1936 2023-09-22T17:31:21.532Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/CallTelemetry Event success:, , _StartLocalVideo, , 
+ 1938 2023-09-22T17:31:21.531Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] startVideo causeId: ea3003a9 start local video successful
+ 1939 2023-09-22T17:31:21.530Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video]/[ea3003a9][waitForVideoObjectState[108]] state changed -> 2 (Starting)
+
+ 1839 2023-09-22T17:31:22.171Z Inf    deviceManagerService: enableVideoEffectOnDevice: enable=false effect={"type":"BackgroundModification","options":{"variant":"Blur"}}
+ 1842 2023-09-22T17:31:22.168Z Inf    deviceManagerService: enableVideoEffectOnDevice: enable=false effect={"type":"BackgroundModification","options":{"variant":"Replacement","location":""}}
+
+ 1703 2023-09-22T17:31:24.128Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0] isStreaming changed to: true
+ 1704 2023-09-22T17:31:24.128Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] videoStatusChanged isStreaming: true status: 4
+ 1705 2023-09-22T17:31:24.103Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: DeviceManager/LocalVideoPreview[1][camera][107] frame-size-changed: 640 x 360
+
+ 1218 2023-09-22T17:33:02.105Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: DeviceManager/LocalVideoPreview[1][camera][107] frame-size-changed: 1280 x 720
+ 1220 2023-09-22T17:33:02.101Z Inf    callingService: videoSizeChangedCallback width: 1280, height: 720, bufferName: local-preview-b6b8229c-c125-4b2a-ba48-243f686fbaf5-e1f7d5b8-d412-4a89-b03d-04b344a2822a_0
+ 1221 2023-09-22T17:33:02.101Z Inf    callingService: videoSizeChangedCallback width: 1280, height: 720, bufferName: local-preview-b6b8229c-c125-4b2a-ba48-243f686fbaf5-e1f7d5b8-d412-4a89-b03d-04b344a2822a_0
+
+  901 2023-09-22T17:34:48.068Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] dispose causeId: ef2c37fc
+  903 2023-09-22T17:34:48.068Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[ef2c37fc][StopVideo] Promise executing: stopVideo: stopping localVideo
+  909 2023-09-22T17:34:48.061Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ef2c37fc][StopVideo]API called, 
+  910 2023-09-22T17:34:48.061Z Inf    [Scenario]stop_video start
+
+
+
+
+
+
+Receiver:
+============
+
+ 20 CallID: 83814f36-d870-4ded-a28b-95cd00fd5318
+ 21 ParticipantID: fa93d515-aa2a-4780-855a-b74644b98b05
+ 22 ConversationID: 19:meeting_NjRmNDA1OWQtNDI1Yi00YjNkLWExNjMtNGM1YmZiN2EzOGFi@thread.v2
+ 23 TenantID: ddb27ae9-e5ee-4b3d-916b-8845d2dfe51e
+ 24 Organizer ObjectID: 01baf1d4-2bab-40a0-816d-3e1f10ca076f
+ 25 9/22/2023 5:30:50 PM GMT Call State: 0 - None
+ 26 9/22/2023 5:30:50 PM GMT Call State: 8 - Observing
+ 27 9/22/2023 5:31:07 PM GMT Call State: 2 - Connecting
+ 28 9/22/2023 5:31:08 PM GMT Call State: 3 - Connected
+ 29 9/22/2023 5:34:54 PM GMT Call State: 6 - Disconnecting
+ 30 9/22/2023 5:34:54 PM GMT Call State: 7 - Disconnected
+ 31 Terminated Reason:  - Success
+
+
+
+   43 CallID: 83814f36-d870-4ded-a28b-95cd00fd5318
+   44 2023-09-22 17:31:07.131 GMT Call State 2 - Connecting
+   45 2023-09-22 17:31:08.511 GMT Call State 3 - Connected
+   46 2023-09-22 17:34:54.453 GMT Call State 6 - Disconnecting
+   47 2023-09-22 17:34:54.657 GMT Terminated Reason  - Success
+   48 2023-09-22 17:34:54.663 GMT Call State 7 - Disconnected
+
+
+Toast:
+-------
+2023-09-22T17:31:00.241Z Inf    JoinNotificationService: Notification toast was added for call with conversationId: 19:meeting_NjRmNDA1OWQtNDI1Yi00YjNkLWExNjMtNGM1YmZiN2EzOGFi@thread.v2 and messageId: 0 for callId/teamsCallId 83814f36-d870-4ded-a28b-95cd00fd5318/2
+2023-09-22T17:31:07.159Z Inf    callingService: [dismissIncomingCallNotification] dismissing notification [teamsCallId=2][callId=83814f36-d870-4ded-a28b-95cd00fd5318] through callingNotificationService
+
+
+Signal:
+--------
+2023-09-22T17:31:22.995Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/ICallParticipant[8:u2][3][106]/SlimCoreElectronRemoteStreamManager[106]/RemoteStream(0)[109:202:0:0:1] constructor: endpointId: , participantId: be399124-7be2-4e7d-8422-b41e336ea84a, negotiationTag: be399124-7be2-4e7d-8422-b41e336ea84a;v_1, causeId: a275ea9d, label: main-video, deviceCapabilities: <empty>, dynamicVirtualParticipantMsi: 4294...
+We have ParticipantID of sender, label (main-video), and stream ID (202). And this CallID.
+
+
+
+Compositor:
+-------------
+2023-09-22T17:31:23.595Z Inf	callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#0:0]/View[0:065169084-15ec-4c64-a086-f244b76c6a77] constructor
+2023-09-22T17:31:23.596Z Inf    compositorManager: [updateCompositorLayout] cId=65169084-15ec-4c64-a086-f244b76c6a77, size=1325x727, offset=3x102, props=[{"id":0,"properties":{"mediaSourceId":202,"area":{"x":0.000015,"y":0.000028,"width":0.99997,"height":0.999945},"spriteType":0,"participantId":"8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f"}}]
+>>> We have CallID and CompositorID coupled here in the first line.
+>>> cId is the Compositor ID - so need to grab that to see what happens with it.
+>>> mediaSourceID (MSI) is here.
+
+       Started:
+ 1953 2023-09-22T17:31:25.211Z Inf    callingService: [updateLayout] Stream started [streamType=0, StreamId=109, participantStreamKey=65169084-15ec-4c64-a086-f244b76c6a77_0, label=main-video]
+       Rendering:
+ 1944 2023-09-22T17:31:25.227Z Inf    compositorManager: [emitCompositorViewRenderingStatus] FirstFrame isRendering: true invoked for streamId: 109 viewId: 0 bufferName: 65169084-15ec-4c64-a086-f244b76c6a77_0 frameWidth: 640 frameHeight: 360
+
+
+
+
+ 1850 2023-09-22T17:31:40.286Z Inf    compositorManager: [updateCompositorLayout] cId=65169084-15ec-4c64-a086-f244b76c6a77, size=1005x727, offset=3x102, props=[{"id":0,"properties":{"mediaSourceId":202,"area":{"x":0.00002,"y":0.000028,"width":0.99996,"height":0.999945},"spriteType":0,"participantId":"8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f"}}]
+ 1798 2023-09-22T17:31:43.815Z Inf    compositorManager: [updateCompositorLayout] cId=65169084-15ec-4c64-a086-f244b76c6a77, size=1594x935, offset=3x102, props=[{"id":0,"properties":{"mediaSourceId":202,"area":{"x":0.000013,"y":0.000021,"width":0.9999750000000001,"height":0.999957},"spriteType":0,"participantId":"8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f"}}]
+
+
+
+
+
+
+Subscribe:
+-----------
+2023-09-22T17:31:23.966Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2]/Receiver[0:0][109:202:#0][0:0] _subscribeReceiver causeId: 367b69d9 timeout: 30000
+2023-09-22T17:31:23.966Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2]/Receiver[0:0][0:0:#0][0:0] subscribeStream causeId: 367b69d9 executing stream changed: none -> 109:202:#1 views (=[] -[] +[0:065169084-15ec-4c64-a086-f244b76c6a77])
+>> Corresponds with the subscribe in the Media log...
+
+ 1959 2023-09-22T17:31:25.183Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2]/Receiver[0:0][109:202:#1][0:0] receiver status-changed event 0 -> 2
+ ^^^^^ 
+enum class VideoReceiverStatus
+{
+   Stopped = 0, 
+   Started = 1, 
+   Active = 2, 
+   Inactive = 3, 
+   Terminated = 5, 
+};
+
+2023-09-22T17:31:25.211Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2]/Receiver[0:0][109:202:#1][109:2] subscribeStream causeId: 367b69d9 duration: 5+1245ms done
+^^^ corresponds to when decoding starts happening.
+
+
+
+Spotlight/Pin:
+---------------
+
+Compositor changes, MSI statys the same.
+
+2023-09-22T17:33:02.073Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2] setVideoStreamConfig causeId: 4e4bb33d stream: 109:202: config: {"isFocusEnabled":true}
+2023-09-22T17:33:02.073Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2]/Receiver[0:0][109:202:#1][109:2] _setSinkDeviceConfig causeId: 4e4bb33d json: {"isFocusEnabled":true} config: {"isFocusEnabled":true}
+
+2023-09-22T17:33:02.578Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#0:3]/View[1:04c772a9e-b5f7-4bcb-98c7-5967d5140cfd] constructor
+2023-09-22T17:33:02.578Z Inf    compositorManager: [updateCompositorLayout] cId=4c772a9e-b5f7-4bcb-98c7-5967d5140cfd, size=1349x935, offset=3x102, props=[{"id":0,"properties":{"mediaSourceId":202,"area":{"x":0.000015,"y":0.000021,"width":0.99997,"height":0.999957},"spriteType":0,"participantId":"8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f"}}]
+
+2023-09-22T17:33:03.049Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:4]/Receiver[1:0][0:0:#0][0:0] subscribeStream causeId: 2ea1dd2b new stream: 109:202:#1 config: {"isFocusEnabled":true}
+
+2023-09-22T17:33:03.071Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:5]/Receiver[1:0][109:202:#1][0:0] receiver status-changed event 0 -> 2
+
+2023-09-22T17:33:03.373Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:5]/Receiver[1:0][109:202:#1][109:2] subscribeStream causeId: 2ea1dd2b duration: 11+313ms done
+
+2023-09-22T17:33:03.374Z Inf    callingService: [updateLayout] Stream started [streamType=0, StreamId=109, participantStreamKey=4c772a9e-b5f7-4bcb-98c7-5967d5140cfd_0, label=main-video]
+
+2023-09-22T17:33:03.410Z Inf    compositorManager: [emitCompositorViewRenderingStatus] FirstFrame isRendering: true invoked for streamId: 109 viewId: 0 bufferName: 4c772a9e-b5f7-4bcb-98c7-5967d5140cfd_0 frameWidth: 1280 frameHeight: 720
+
+
+
+
+
+
+
+==============================================================================================================================================================================
+ 2029 2023-09-22T17:31:22.995Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/ICallParticipant[8:u2][3][106]/SlimCoreElectronRemoteStreamManager[106]/RemoteStream(0)[109:202:0:0:1] constructor: endpointId: , participantId: be399124-7be2-4e7d-8422-b41e336ea84a, negotiationTag: be399124-7be2-4e7d-8422-b41e336ea84a;v_1, causeId: a275ea9d, label: main-video, deviceCapabilities: <empty>, dynamicVirtualParticipantMsi: 4294...
+
+ 1995 2023-09-22T17:31:23.490Z Inf    [Scenario]create_compositor [step](4)stop (2ms/37ms) [status]success
+ 1998 2023-09-22T17:31:23.488Z Inf    [Scenario]create_compositor [step](3)added_listeners (5ms)
+ 1999 2023-09-22T17:31:23.483Z Inf    [Scenario]create_compositor [step](2)service_created_compositor (17ms)
+ 2003 2023-09-22T17:31:23.466Z Inf    [Scenario]create_compositor [step](1)prepared_for_native_rendering (13ms)
+ 2017 2023-09-22T17:31:23.453Z Inf    [Scenario]create_compositor start
+ 2021 2023-09-22T17:31:23.453Z Inf    compositorManager: [createCompositor] params: {"callMapId":"2","compositorId":"65169084-15ec-4c64-a086-f244b76c6a77","creationContext":"IncomingVideo","size":{"width":1325,"height":727},"offset":{"x":3,"y":102},"zOrder":1,"scale":1,"frequencyMs":33,"enableGpu":false,"enableTextureSharing":false,"windowId":"c8588ef3-d72f-41c4-ad40-687528a42878","disableNativeCompositor":false,"backgroundColor":{"red":27,"green":26,"blue":26,"alpha":255},"enableSoftwareRgba":false,"enableEventObject":false,"enableRenderPipeli...
+
+ 1490 2023-09-22T17:33:02.075Z Inf    callingService: [toggleVideoStreamFocus] updating participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f. Video focus toggled to: true
+ 1491 2023-09-22T17:33:02.075Z Inf    callingService: [toggleVideoStreamFocus] updating VL focus participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f stream:109-202 main-video isFocusEnabled: true.
+ 1492 2023-09-22T17:33:02.073Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2]/Receiver[0:0][109:202:#1][109:2] _setSinkDeviceConfig causeId: 4e4bb33d json: {"isFocusEnabled":true} config: {"isFocusEnabled":true}
+ 1493 2023-09-22T17:33:02.073Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:2] setVideoStreamConfig causeId: 4e4bb33d stream: 109:202: config: {"isFocusEnabled":true}
+
+ 1462 2023-09-22T17:33:02.310Z Inf    callingService: [toggleVideoStreamFocus] updating participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f. Video focus toggled to: true
+ 1463 2023-09-22T17:33:02.309Z Inf    callingService: [toggleVideoStreamFocus] updating VL focus participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f stream:109-202 main-video isFocusEnabled: true.
+
+ 1395 2023-09-22T17:33:03.049Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:4]/Receiver[1:0][0:0:#0][0:0] subscribeStream causeId: 2ea1dd2b new stream: 109:202:#1 config: {"isFocusEnabled":true}
+
+ 1374 2023-09-22T17:33:03.410Z Inf    callingService: videoSizeChangedCallback width: 1280, height: 720, bufferName: 4c772a9e-b5f7-4bcb-98c7-5967d5140cfd_109_opt
+ 1375 2023-09-22T17:33:03.410Z Inf    callingService: videoSizeChangedCallback width: 1280, height: 720, bufferName: 4c772a9e-b5f7-4bcb-98c7-5967d5140cfd_109_opt
+
+
+ 1216 2023-09-22T17:33:32.736Z Inf    callingService: [toggleVideoStreamFocus] updating participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f. Video focus toggled to: false
+ 1217 2023-09-22T17:33:32.736Z Inf    callingService: [toggleVideoStreamFocus] updating VL focus participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f stream:109-202 main-video isFocusEnabled: false.
+
+
+ 1137 2023-09-22T17:33:33.462Z Inf    [Scenario]video_stream_rendering start
+ 1159 2023-09-22T17:33:32.980Z Inf    [Scenario]create_compositor [step](4)stop (2ms/23ms) [status]success
+ 1162 2023-09-22T17:33:32.978Z Inf    [Scenario]create_compositor [step](3)added_listeners (6ms)
+ 1163 2023-09-22T17:33:32.972Z Inf    [Scenario]create_compositor [step](2)service_created_compositor (8ms)
+ 1167 2023-09-22T17:33:32.964Z Inf    [Scenario]create_compositor [step](1)prepared_for_native_rendering (7ms)
+ 1181 2023-09-22T17:33:32.957Z Inf    [Scenario]create_compositor start
+ 1185 2023-09-22T17:33:32.956Z Inf    compositorManager: [createCompositor] params: {"callMapId":"2","compositorId":"9f3cbda2-646f-489b-af91-9aced947ba2b","creationContext":"IncomingVideo","size":{"width":1594,"height":935},"offset":{"x":3,"y":102},"zOrder":1,"scale":1,"frequencyMs":33,"enableGpu":false,"enableTextureSharing":false,"windowId":"c8588ef3-d72f-41c4-ad40-687528a42878","disableNativeCompositor":false,"backgroundColor":{"red":27,"green":26,"blue":26,"alpha":255},"enableSoftwareRgba":false,"enableEventObject":false,"enableRenderPipeli...
+
+ 1122 2023-09-22T17:33:33.617Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:8]/Receiver[2:0][109:202:#0][0:0] _setSinkDeviceConfig causeId: eff9f39c json: {"isFocusEnabled":false} config: {"isFocusEnabled":false}
+ 1127 2023-09-22T17:33:33.603Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:7]/Receiver[2:0][0:0:#0][0:0] subscribeStream causeId: eff9f39c new stream: 109:202:#1 config: {"isFocusEnabled":false}
+
+
+ 1106 2023-09-22T17:33:34.214Z Inf    callingService: videoSizeChangedCallback width: 640, height: 360, bufferName: 9f3cbda2-646f-489b-af91-9aced947ba2b_109_opt
+ 1107 2023-09-22T17:33:34.214Z Inf    callingService: videoSizeChangedCallback width: 640, height: 360, bufferName: 9f3cbda2-646f-489b-af91-9aced947ba2b_109_opt
+ 1118 2023-09-22T17:33:34.199Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/ICallParticipant[8:u2][3][106]/SlimCoreElectronRemoteStreamManager[106]/RemoteStream(0)[109:202:0:0:1] setIsStreamingOverride: causeId: eff9f39c override: false -> true
+
+  966 2023-09-22T17:34:31.322Z Inf    callingService: [toggleVideoStreamFocus] updating participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f. Video focus toggled to: true
+  967 2023-09-22T17:34:31.322Z Inf    callingService: [toggleVideoStreamFocus] updating VL focus participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f stream:109-202 main-video isFocusEnabled: true.
+  968 2023-09-22T17:34:31.322Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#1:8] setVideoStreamConfig causeId: e2bf3e1c stream: 109:202: config: {"isFocusEnabled":true}
+  969 2023-09-22T17:34:31.318Z Inf    callingService: [toggleVideoStreamFocus] updating participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f. Video focus toggled to: true
+
+
+  854 2023-09-22T17:34:33.862Z Inf    callingService: [toggleVideoStreamFocus] updating participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f. Video focus toggled to: true
+  855 2023-09-22T17:34:33.862Z Inf    callingService: [toggleVideoStreamFocus] updating VL focus participant: 8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f stream:109-202 main-video isFocusEnabled: true.
+  862 2023-09-22T17:34:32.695Z Inf    callingService: videoSizeChangedCallback width: 1280, height: 720, bufferName: 35fa5ae1-085c-4b31-9eec-a6413ef75b48_109_opt
+  863 2023-09-22T17:34:32.695Z Inf    callingService: videoSizeChangedCallback width: 1280, height: 720, bufferName: 35fa5ae1-085c-4b31-9eec-a6413ef75b48_109_opt
+  867 2023-09-22T17:34:32.686Z Inf    [Scenario]video_stream_rendering [step](1)stop (792ms/792ms) [status]success
+
+
