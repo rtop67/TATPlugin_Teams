@@ -290,7 +290,7 @@ namespace TATPlugin_Teams
             string strRxCam0 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*RemoteStream\(\d+\)\[(\d+):(\d+):\d+:\d+:\d+\].*participantId: ([a-f\d]{{8}}(?:-[a-f\d]{{4}}){{3}}-[a-f\d]{{12}}).*label: ([\w-]+)"; // StreamID, VideoId, Remote PartID, label
             string strRxCam1 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*Receiver\[\d+:\d+\]\[(\d+):(\d+):.*_subscribeReceiver"; // StreamID, VideoId & SubscribeRequest
             string strRxCam2 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*Receiver\[\d+:\d+\]\[(\d+):(\d+):.*subscribeStream.*done"; // StreamID, VideoId & Subscribe done
-            string strRxCam3 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*Receiver\[\d+:\d+\]\[\d+:(\d+):.*receiver status-changed event (\d) -> (\d)"; // Show video stream status
+            string strRxCam3 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*Receiver\[\d+:\d+\]\[\d+:(\d+):#\d+\]\[(\d+):\d+\].*receiver status-changed event (\d) -> (\d)"; // Show video stream status
             string strRxCam4 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*compositorManager:.*FirstFrame isRendering: (\w+) invoked for streamId: (\d+).* frameWidth: (\d+).*frameHeight: (\d+)"; //rendering status, StreamID, Width and Height
             string strRxCam5 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*Receiver.*subscribeStream.*new stream:\s\d+:(\d+).*\""isFocusEnabled\"":(\w+)"; // VideoId & Pinned/Spotlighted
 
@@ -335,7 +335,7 @@ namespace TATPlugin_Teams
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " Subscribe request sent.");
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Subscribe request sent.");
                     bIncomingVid = true;
                 }
             }
@@ -353,7 +353,7 @@ namespace TATPlugin_Teams
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " Subscribe completed.");
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Subscribe completed.");
                     bIncomingVid = true;
                 }
             }
@@ -364,13 +364,25 @@ namespace TATPlugin_Teams
                 {
                     strDT = mcCam3[i].Groups[1].ToString();
                     strVideoID = mcCam3[i].Groups[2].ToString();
-                    strOldStatus = mcCam3[i].Groups[3].ToString();
-                    strNewStatus = mcCam3[i].Groups[4].ToString();
+                    strStreamID = mcCam3[i].Groups[3].ToString();
+                    strOldStatus = mcCam3[i].Groups[4].ToString();
+                    strNewStatus = mcCam3[i].Groups[5].ToString();
 
                     strOldStatus = GetRecvVideoStatus(strOldStatus);
                     strNewStatus = GetRecvVideoStatus(strNewStatus);
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " changed from " + strOldStatus + " to " + strNewStatus);
+                    if (strVideoID == "0")
+                    {
+                        for (int n = 0; n < g_VidStrIds.Count; n++)
+                        {
+                            if (g_VidStrIds[n].Item2 == strStreamID)
+                            {
+                                strVideoID = g_VidStrIds[n].Item1;
+                            }
+                        }
+                    }
+
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - changed from " + strOldStatus + " to " + strNewStatus);
                 }
             }
 
@@ -395,7 +407,7 @@ namespace TATPlugin_Teams
                             }
                         }
 
-                        AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + ", Rendering: " + strRendering + ", Resolution: " + strRes);
+                        AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
                     }
                 }
             }
@@ -409,7 +421,7 @@ namespace TATPlugin_Teams
                     strVideoID = mcCam5[i].Groups[2].ToString();
                     strPinned = mcCam5[i].Groups[3].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + ", Is focussed/pinned: " + strPinned);
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Is focussed/pinned: " + strPinned);
                 }
             }
 
