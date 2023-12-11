@@ -44,7 +44,15 @@ Media connected:
 Start Camera:
 --------------
 2023-09-22T17:31:21.517Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ea3003a9][_StartLocalVideo]API called, 
+
+
 2023-09-22T17:31:21.522Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0] _startVideoStream causeId: ea3003a9 create local video main-video for device name: HD Webcam eMeet C960 path: \\?\usb#vid_328f&pid_003f&mi_00#7&124b7a38&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global
+
+>> $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*create local video ([\w-]+).*for device name: (.*?)(?=\s+path)";
+
+
+
+
 2023-09-22T17:31:21.531Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] startVideo causeId: ea3003a9 start local video successful
 
 
@@ -63,6 +71,11 @@ Preview:
 Streaming:
 -------------
 2023-09-22T17:31:24.128Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] videoStatusChanged isStreaming: true status: 4
+
+>>  $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*videoStatusChanged isStreaming: (\w+) status: (\d+)";
+
+
+
 enum class VideoStatus
 {
    NotAvailable = 0, 
@@ -82,9 +95,22 @@ enum class VideoStatus
 
 Stopping video:
 ------------------
-2023-09-22T17:34:48.061Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[Operation] [ef2c37fc][StopVideo]API called, 
-2023-09-22T17:34:48.068Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[ef2c37fc][StopVideo] Promise executing: stopVideo: stopping localVideo
 2023-09-22T17:34:48.069Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0] isStreaming changed to: false
+
+
+2023-09-22T17:34:48.073Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video]/[ef2c37fc][waitForVideoObjectState[108]] state changed -> 5 (Stopping)
+
+>>  $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*/VideoStream\[\d+:([\w-]+)\].*state changed -> (\d)"
+
+
+
+2023-09-22T17:34:48.074Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/LocalVideo[0]/VideoStream[108:main-video] stopVideo causeId: ef2c37fc stop local video successful callVideoStop: true
+
+ 
+ 
+ 
+2023-09-22T17:34:48.068Z Inf    callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/0[103:83814f36-d870-4ded-a28b-95cd00fd5318][1bfc3d38][be399124][3]/[ef2c37fc][StopVideo] Promise executing: stopVideo: stopping localVideo
+
 
 
 
@@ -173,6 +199,7 @@ We have ParticipantID of sender, label (main-video), and stream ID (202). And th
 Compositor:
 -------------
 2023-09-22T17:31:23.595Z Inf	callingAgents: slimcore-calling [JS.TsCalling.Electron] ffffffff: CallingStack/CallRegistry/0/Electron/1[105:83814f36-d870-4ded-a28b-95cd00fd5318][d799b3a2][fa93d515][3]/VideoLayout[#0:0]/View[0:065169084-15ec-4c64-a086-f244b76c6a77] constructor
+
 2023-09-22T17:31:23.596Z Inf    compositorManager: [updateCompositorLayout] cId=65169084-15ec-4c64-a086-f244b76c6a77, size=1325x727, offset=3x102, props=[{"id":0,"properties":{"mediaSourceId":202,"area":{"x":0.000015,"y":0.000028,"width":0.99997,"height":0.999945},"spriteType":0,"participantId":"8:orgid:01baf1d4-2bab-40a0-816d-3e1f10ca076f"}}]
 >>> We have CallID and CompositorID coupled here in the first line.
 >>> cId is the Compositor ID - so need to grab that to see what happens with it.

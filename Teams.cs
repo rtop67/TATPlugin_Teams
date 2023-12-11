@@ -110,6 +110,7 @@ namespace TATPlugin_Teams
             g_WebLogLines.Clear();
             g_RendererLines.Clear();
             g_MediaLines.Clear();
+            g_CallData.Clear();
         }
 
         //Create a new file with -PARSED at the end of the file name - so we know it is parsed
