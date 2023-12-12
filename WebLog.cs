@@ -8,6 +8,7 @@ using static TATPlugin_Teams.Teams;
 using static TATPlugin_Teams.Resource;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Runtime.Serialization;
 
 namespace TATPlugin_Teams
 {
@@ -16,7 +17,7 @@ namespace TATPlugin_Teams
         // All WebLog lines to be added to the text
         public static List<string> g_WebLogLines = new List<string>();
 
-        //CompositorIDs List
+        //VideoIDs and StreamIDs List - they are coupled and sometimes only one is logged, and we might need the other
         public static List<Tuple<string, string>> g_VidStrIds = new List<Tuple<string, string>>();
 
         // Entries for below list
@@ -28,7 +29,7 @@ namespace TATPlugin_Teams
             public string strVal { get; set; }
         }
 
-        // Call data entry list
+        // Call data entry list - stores all the Call Data lines that will be added to the output
         public static List<g_CallDataEntry> g_CallData = new List<g_CallDataEntry>();
 
         // For comparing Date-Times in the list for sorting  -  sort using:  g_CallData.Sort(new DateTimeComparer());
@@ -159,7 +160,6 @@ namespace TATPlugin_Teams
                             AddCallDataEntry(strCallID, strDT, "MeetingID", strMeetID);
                         }
                     }
-
                 }
             }
 
@@ -177,13 +177,13 @@ namespace TATPlugin_Teams
 
                     // Put this in a list to be added to the WebLogLines later after sorting by date
                     AddCallDataEntry(strCallID, strDT, "Call State", strState);
-                    
                 }
             }
             if (mcPartIDs.Count > 0 || mcCallStates.Count > 0)
             {
                 foreach (string strID in g_CallIDs)
                 {
+                    GetCallIDChanged(strID);
                     GetOutVideoData(strID);
                     GetInVideoData(strID);
                     GetCallEnd(strID);
@@ -194,6 +194,28 @@ namespace TATPlugin_Teams
 
         } // GetCallData
 
+        public static void GetCallIDChanged(string strCallID)
+        {
+            string strDT = "";
+            string strNewID = "";
+
+            string strRxCallChanged = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*_onCallIdChanged\s([a-f\d]{{8}}(?:-[a-f\d]{{4}}){{3}}-[a-f\d]{{12}})";
+
+            MatchCollection mcChange = Regex.Matches(g_allText, strRxCallChanged);
+
+            if (mcChange.Count > 0)
+            {
+                for (int i = mcChange.Count - 1; i >= 0; i--) // gotta do reverse...
+                {
+                    strDT = mcChange[i].Groups[1].ToString();
+                    strNewID = mcChange[i].Groups[2].ToString();
+
+                    if (strCallID != strNewID)
+                        AddCallDataEntry(strCallID, strDT, "CallID Changed - ", "From: " + strCallID + " To: " + strNewID);
+                }
+            }
+        }
+        
         // Get data about starting and stopping outgoing video feeds
         public static void GetOutVideoData(string strCallID)
         {
@@ -266,7 +288,7 @@ namespace TATPlugin_Teams
                     AddCallDataEntry(strCallID, strDT, "Outgoing Video - ", "Video Name: " + strVidname + ", Streaming: Stop " + strStreaming + ", Status: Call Video Stop = " + strStatus);
                 }
             }
-        }
+        } // GetOutVideoData
 
         // Get data about starting and stopping incoming video feeds
         public static void GetInVideoData(string strCallID)
@@ -284,6 +306,9 @@ namespace TATPlugin_Teams
             string strRes = "";
             string strPinned = "";
             bool bIncomingVid = false;
+
+            DateTime dtConn = GetDateTime(strCallID, "3 - Connected");
+            DateTime dtDisconn = GetDateTime(strCallID, "6 - Disconnecting");
 
             g_VidStrIds.Clear();
 
@@ -398,20 +423,24 @@ namespace TATPlugin_Teams
                         strWidth = mcCam4[i].Groups[4].ToString();
                         strHeight = mcCam4[i].Groups[5].ToString();
                         strRes = strWidth + "x" + strHeight;
+                        DateTime dtEntry = ConvertDT(strDT);
 
-                        for (int n = 0; n < g_VidStrIds.Count; n++)
+                        if (dtEntry < dtDisconn && dtEntry > dtConn)  // check to see if the time on these correlates to the time of the actual call here...
                         {
-                            if (g_VidStrIds[n].Item2 == strStreamID)
-                            {
-                                strVideoID = g_VidStrIds[n].Item1;
-                            }
-                        }
 
-                        AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
+                            for (int n = 0; n < g_VidStrIds.Count; n++)
+                            {
+                                if (g_VidStrIds[n].Item2 == strStreamID)
+                                {
+                                    strVideoID = g_VidStrIds[n].Item1;
+                                }
+                            }
+
+                            AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
+                        }
                     }
                 }
             }
-
 
             if (mcCam5.Count > 0)
             {
@@ -424,8 +453,7 @@ namespace TATPlugin_Teams
                     AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Is focussed/pinned: " + strPinned);
                 }
             }
-
-        }
+        } // GetInVideoData
 
         // Try to get Terminate reason and other end-of-call info
         public static void GetCallEnd(string strCallID)
@@ -518,6 +546,7 @@ namespace TATPlugin_Teams
                     }
                 }
             }
+
             // Now create and add the entry
             g_CallDataEntry callDataEntry = new g_CallDataEntry
             {
@@ -528,5 +557,21 @@ namespace TATPlugin_Teams
             };
             g_CallData.Add(callDataEntry);
         } // AddCallDataEntry
+
+        // Get DateTime for certain CallDataEntries so we can determine if they are in the correct place.
+        public static DateTime GetDateTime(string strCallID, string strState)
+        {
+            DateTime dtRet = DateTime.MinValue;
+
+            foreach (g_CallDataEntry entry in g_CallData)
+            {
+                if (entry.strID == strCallID && entry.strVal == strState)
+                {
+                    dtRet = entry.datetime;
+                }
+            }
+
+            return dtRet;
+        }
     }
 }

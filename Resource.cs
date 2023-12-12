@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.Remoting;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms.VisualStyles;
 using static TATPlugin_Teams.Teams;
 
@@ -8,6 +10,8 @@ namespace TATPlugin_Teams
 {
     public class Resource
     {
+        // Time format for Date Times when they get brought in - to keep things easy to read and in the same format
+        public static string timeFmt = "yyyy-MM-dd HH:mm:ss.fff";
 
         // Put info about this Parsing DLL at the top of the text in TAT
         public static string GetHeaderInfo()
@@ -110,7 +114,7 @@ namespace TATPlugin_Teams
         }
 
         // OS version info
-        public static string[,] rgOSVer = new string[74, 2]  // Will need updating as new OS builds release
+        public static string[,] rgOSVer = new string[75, 2]  // Will need updating as new OS builds release
         {
             {"10.15.0", "MacOS Catalina Released 10-7-2019" },
             {"10.15.1", "MacOS Catalina Released 10-29-2019" },
@@ -185,7 +189,8 @@ namespace TATPlugin_Teams
             {"19044", "Win10 21H2 Released 11-16-2021" },
             {"19045", "Win10 22H2 Released 10-18-2022" },
             {"22000", "Win11 21H2 Released 10-4-2021" },
-            {"22621", "Win11 22H2 Released 9-20-2022" }
+            {"22621", "Win11 22H2 Released 9-20-2022" },
+            {"22631", "Win11 23H2 Released 10-31-2022" }
         };
 
         // Get OS version
@@ -567,5 +572,22 @@ namespace TATPlugin_Teams
                 }
             }
         } // AddCallID
+
+        public static DateTime ConvertDT(string strDT)
+        {
+            strDT = strDT.Replace('T', ' ');
+            strDT = strDT.TrimEnd('Z');
+            DateTime dtOut = DateTime.ParseExact(strDT, timeFmt, CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+            return dtOut;
+        }
+
+        // < 0 dt1 earlier, 0 equal, > 0 dt1 later
+        public static int CompareDateTimes(DateTime dt1, DateTime dt2)
+        {
+            int iResult = 0;
+            iResult = DateTime.Compare(dt1, dt2);
+            return iResult;
+        }
     }
 }
