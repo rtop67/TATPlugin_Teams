@@ -401,11 +401,12 @@ namespace TATPlugin_Teams
         }
 
         
-        public static string[,] rgVideoStatus = new string[8, 2]
+        public static string[,] rgVideoStatus = new string[9, 2]
         {
             {"0", "NotAvailable" },
             {"1", "Available" },
             {"2", "Starting" },
+            {"3", "Rejected" },
             {"4", "Running" },
             {"5", "Stopping" },
             {"6", "Paused" },
@@ -417,8 +418,8 @@ namespace TATPlugin_Teams
         public static string GetVideoStatus(string strInt)
         {
             string strVidStatus = strInt;
-            int upperBound = rgCallEndReason.GetUpperBound(0);
-            rgCallEndReason.GetUpperBound(1);
+            int upperBound = rgVideoStatus.GetUpperBound(0);
+            rgVideoStatus.GetUpperBound(1);
             for (int i = 0; i <= upperBound; i++)
             {
                 if (strInt == rgVideoStatus[i, 0])
@@ -580,7 +581,7 @@ namespace TATPlugin_Teams
             DateTime dtOut = DateTime.ParseExact(strDT, timeFmt, CultureInfo.InvariantCulture, DateTimeStyles.None);
 
             return dtOut;
-        }
+        } // ConvertDT
 
         // < 0 dt1 earlier, 0 equal, > 0 dt1 later
         public static int CompareDateTimes(DateTime dt1, DateTime dt2)
@@ -588,6 +589,13 @@ namespace TATPlugin_Teams
             int iResult = 0;
             iResult = DateTime.Compare(dt1, dt2);
             return iResult;
+        } // CompareDateTimes
+
+        // Decimal to Hex Converter
+        public static string Dec2Hex(string strDec)
+        {
+            int iDec = Int32.Parse(strDec);
+            return iDec.ToString("X");
         }
     }
 }

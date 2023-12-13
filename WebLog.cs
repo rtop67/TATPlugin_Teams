@@ -185,6 +185,7 @@ namespace TATPlugin_Teams
                 {
                     GetCallIDChanged(strID);
                     GetOutVideoData(strID);
+                    GetOutSS(strID);
                     GetInVideoData(strID);
                     GetCallEnd(strID);
                 }
@@ -194,6 +195,7 @@ namespace TATPlugin_Teams
 
         } // GetCallData
 
+        // Sometimes the CallID changes - so log that.
         public static void GetCallIDChanged(string strCallID)
         {
             string strDT = "";
@@ -214,9 +216,9 @@ namespace TATPlugin_Teams
                         AddCallDataEntry(strCallID, strDT, "CallID Changed - ", "From: " + strCallID + " To: " + strNewID);
                 }
             }
-        }
+        } // GetCallIDChanged
         
-        // Get data about starting and stopping outgoing video feeds
+        // Get outgoing video feeds data
         public static void GetOutVideoData(string strCallID)
         {
             string strDT = "";
@@ -290,7 +292,97 @@ namespace TATPlugin_Teams
             }
         } // GetOutVideoData
 
-        // Get data about starting and stopping incoming video feeds
+        
+        // Get Outgoing screenshare feed data
+        public static void GetOutSS(string strCallID)
+        {
+            string strDT = "";
+            string strSS = "";
+            string strWidth = "";
+            string strHeight = "";
+            string strRes = "";
+            string strStatus = "";
+            string strHwndD = "";
+            string strHwndH = "";
+
+            string strRxSS0 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*?\b(Start|Stop)ScreenSharing.*API called"; // Called to start or stop screenshare
+            string strRxSS1 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*Selected region with optional crop.*width = (\d+) height = (\d+)"; // resolution
+            string strRxSS2 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*?\b(Start|Stop)ScreenSharing.*success"; // Started or stopped screenshare
+            string strRxSS3 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*videoObjectChanged status: (\d+)"; // get status
+            string strRxSS4 = $@"(\d{{4}}-\d{{2}}-\d{{2}}T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z)\s+.*callingAgents:\sslimcore-calling.*{Regex.Escape(strCallID)}.*screenshare region: undefined windowId: (\d+)"; // Get WindowID - this is an App being shared.
+            // Not sure what happens when sharing a single app - if there is a good line to use to show that... So leaving this here as a note to add if there is something
+
+            MatchCollection mcSS0 = Regex.Matches(g_allText, strRxSS0);
+            MatchCollection mcSS1 = Regex.Matches(g_allText, strRxSS1);
+            MatchCollection mcSS2 = Regex.Matches(g_allText, strRxSS2);
+            MatchCollection mcSS3 = Regex.Matches(g_allText, strRxSS3);
+            MatchCollection mcSS4 = Regex.Matches(g_allText, strRxSS4);
+
+
+            if (mcSS0.Count > 0)
+            {
+                for (int i = mcSS0.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcSS0[i].Groups[1].ToString();
+                    strSS = mcSS0[i].Groups[2].ToString();
+
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Called to " + strSS.ToLower() + " screensharing");
+                }
+            }
+
+            if (mcSS1.Count > 0)
+            {
+                for (int i = mcSS1.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcSS1[i].Groups[1].ToString();
+                    strWidth = mcSS1[i].Groups[2].ToString();
+                    strHeight = mcSS1[i].Groups[3].ToString();
+                    strRes = strWidth + "x" + strHeight;
+
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Resolution: " + strRes);
+                }
+            }
+
+            if (mcSS2.Count > 0)
+            {
+                for (int i = mcSS2.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcSS2[i].Groups[1].ToString();
+                    strSS = mcSS2[i].Groups[2].ToString();
+
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Call to " + strSS.ToLower() + " screensharing was successful");
+                }
+            }
+
+            if (mcSS3.Count > 0)
+            {
+                for (int i = mcSS3.Count - 1; i >= 0; i--)  // gotta do reverse 
+                {
+                    strDT = mcSS3[i].Groups[1].ToString();
+                    strStatus = mcSS3[i].Groups[2].ToString();
+
+                    strStatus = GetVideoStatus(strStatus);
+
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Screensharing status set to: " + strStatus);
+                }
+            }
+
+            if (mcSS4.Count > 0)
+            {
+                for (int i = mcSS4.Count - 1; i >= 0; i--) // gotta do reverse
+                {
+                    strDT = mcSS4[i].Groups[1].ToString();
+                    strHwndD = mcSS4[i].Groups[2].ToString();
+                    strHwndH = Dec2Hex(strHwndD);
+
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Sharing a specific app window, WindowID: " + strHwndD + "(dec), " + strHwndH + "(hex)");
+                }
+            }
+
+        } // GetOutSS
+
+
+        // Get incoming video feeds data
         public static void GetInVideoData(string strCallID)
         {
             string strDT = "";
@@ -337,12 +429,15 @@ namespace TATPlugin_Teams
                     strRemotePartID = mcCam0[i].Groups[4].ToString();
                     strVidname = mcCam0[i].Groups[5].ToString();
 
-                    if (!g_VidStrIds.Any(t => t.Item1 == strVideoID))
+                    if (strVideoID == "4294967294") // Clean this up. In the Media log videoID will be "-2" for a P2P call where video is shared
+                        strVideoID = "-2";
+
+                    if (!g_VidStrIds.Any(t => t.Item1 == strVideoID)) // Add StreamID and VideoID to a Tuple list - for retrieval later as needed
                     {
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "Video Name: " + strVidname + ", VideoId: " + strVideoID + ", Remote ParticipantID: " + strRemotePartID);
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "Video/VbSS Name: " + strVidname + ", VideoId: " + strVideoID + ", Remote ParticipantID: " + strRemotePartID);
                     bIncomingVid = true;
                 }
             }
@@ -355,12 +450,15 @@ namespace TATPlugin_Teams
                     strStreamID = mcCam1[i].Groups[2].ToString();
                     strVideoID = mcCam1[i].Groups[3].ToString();
 
-                    if (!g_VidStrIds.Any(t => t.Item1 == strVideoID))
+                    if (strVideoID == "4294967294") // Clean this up. In the Media log videoID will be "-2" for a P2P call where video is shared
+                        strVideoID = "-2";
+
+                    if (!g_VidStrIds.Any(t => t.Item1 == strVideoID)) // Add StreamID and VideoID to a Tuple list - for retrieval later as needed
                     {
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Subscribe request sent.");
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Subscribe request sent.");
                     bIncomingVid = true;
                 }
             }
@@ -373,12 +471,15 @@ namespace TATPlugin_Teams
                     strStreamID = mcCam2[i].Groups[2].ToString();
                     strVideoID = mcCam2[i].Groups[3].ToString();
 
-                    if (!g_VidStrIds.Any(t => t.Item1 == strVideoID))
+                    if (strVideoID == "4294967294") // Clean this up. In the Media log videoID will be "-2" for a P2P call where video is shared
+                        strVideoID = "-2";
+
+                    if (!g_VidStrIds.Any(t => t.Item1 == strVideoID)) // Add StreamID and VideoID to a Tuple list - for retrieval later as needed
                     {
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Subscribe completed.");
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Subscribe completed.");
                     bIncomingVid = true;
                 }
             }
@@ -393,12 +494,15 @@ namespace TATPlugin_Teams
                     strOldStatus = mcCam3[i].Groups[4].ToString();
                     strNewStatus = mcCam3[i].Groups[5].ToString();
 
+                    if (strVideoID == "4294967294") // Clean this up. In the Media log videoID will be "-2" for a P2P call where video is shared
+                        strVideoID = "-2";
+
                     strOldStatus = GetRecvVideoStatus(strOldStatus);
                     strNewStatus = GetRecvVideoStatus(strNewStatus);
 
                     if (strVideoID == "0")
                     {
-                        for (int n = 0; n < g_VidStrIds.Count; n++)
+                        for (int n = 0; n < g_VidStrIds.Count; n++)  // Pull VideoId out of the Tuple list for the output
                         {
                             if (g_VidStrIds[n].Item2 == strStreamID)
                             {
@@ -407,11 +511,11 @@ namespace TATPlugin_Teams
                         }
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - changed from " + strOldStatus + " to " + strNewStatus);
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - changed from " + strOldStatus + " to " + strNewStatus);
                 }
             }
 
-            if (bIncomingVid == true)
+            if (bIncomingVid == true)  // This line of output has no CallID to correlate to, so have to use additional means to get the output right
             {
                 if (mcCam4.Count > 0)
                 {
@@ -428,7 +532,7 @@ namespace TATPlugin_Teams
                         if (dtEntry < dtDisconn && dtEntry > dtConn)  // check to see if the time on these correlates to the time of the actual call here...
                         {
 
-                            for (int n = 0; n < g_VidStrIds.Count; n++)
+                            for (int n = 0; n < g_VidStrIds.Count; n++)  // Pull VideoId out of the Tuple list for the output
                             {
                                 if (g_VidStrIds[n].Item2 == strStreamID)
                                 {
@@ -436,7 +540,7 @@ namespace TATPlugin_Teams
                                 }
                             }
 
-                            AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
+                            AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
                         }
                     }
                 }
@@ -450,7 +554,10 @@ namespace TATPlugin_Teams
                     strVideoID = mcCam5[i].Groups[2].ToString();
                     strPinned = mcCam5[i].Groups[3].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video - ", "VideoId: " + strVideoID + " - Is focussed/pinned: " + strPinned);
+                    if (strVideoID == "4294967294") // Clean this up. In the Media log videoID will be "-2" for a P2P call where video is shared
+                        strVideoID = "-2";
+
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Is focussed/pinned: " + strPinned);
                 }
             }
         } // GetInVideoData
@@ -572,6 +679,6 @@ namespace TATPlugin_Teams
             }
 
             return dtRet;
-        }
+        } // GetDateTime
     }
 }
