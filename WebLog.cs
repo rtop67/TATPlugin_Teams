@@ -213,7 +213,7 @@ namespace TATPlugin_Teams
                     strNewID = mcChange[i].Groups[2].ToString();
 
                     if (strCallID != strNewID)
-                        AddCallDataEntry(strCallID, strDT, "CallID Changed - ", "From: " + strCallID + " To: " + strNewID);
+                        AddCallDataEntry(strCallID, strDT, "CallID Changed -", "From: " + strCallID + " To: " + strNewID);
                 }
             }
         } // GetCallIDChanged
@@ -245,7 +245,7 @@ namespace TATPlugin_Teams
                     strVidname = mcCam0[i].Groups[2].ToString();
                     strDevice = mcCam0[i].Groups[3].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing Video - ", "Opening Camera. Video Name: " + strVidname + ", Device: " + strDevice);
+                    AddCallDataEntry(strCallID, strDT, "Outgoing Video -", "Opening Camera. Video Name: " + strVidname + ", Device: " + strDevice);
                 }
             }
 
@@ -260,7 +260,7 @@ namespace TATPlugin_Teams
 
                     strStatus = GetVideoStatus(strStatus);
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing Video - ", "Video Name: " + strVidname + ", Streaming: " + strStreaming + ", Status: " + strStatus);
+                    AddCallDataEntry(strCallID, strDT, "Outgoing Video -", "Video Name: " + strVidname + ", Streaming: " + strStreaming + ", Status: " + strStatus);
                 }
             }
 
@@ -274,7 +274,7 @@ namespace TATPlugin_Teams
                     
                     strStatus = GetVideoStatus(strStatus);
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing Video - ", "Video Name: " + strVidname + ", Status: " + strStatus);
+                    AddCallDataEntry(strCallID, strDT, "Outgoing Video -", "Video Name: " + strVidname + ", Status: " + strStatus);
                 }
             }
 
@@ -287,7 +287,7 @@ namespace TATPlugin_Teams
                     strStreaming = mcCam3[i].Groups[3].ToString();
                     strStatus = mcCam3[i].Groups[4].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing Video - ", "Video Name: " + strVidname + ", Streaming: Stop " + strStreaming + ", Status: Call Video Stop = " + strStatus);
+                    AddCallDataEntry(strCallID, strDT, "Outgoing Video -", "Video Name: " + strVidname + ", Streaming: Stop " + strStreaming + ", Status: Call Video Stop = " + strStatus);
                 }
             }
         } // GetOutVideoData
@@ -326,7 +326,7 @@ namespace TATPlugin_Teams
                     strDT = mcSS0[i].Groups[1].ToString();
                     strSS = mcSS0[i].Groups[2].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Called to " + strSS.ToLower() + " screensharing");
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS -", "Called to " + strSS.ToLower() + " screensharing");
                 }
             }
 
@@ -339,7 +339,7 @@ namespace TATPlugin_Teams
                     strHeight = mcSS1[i].Groups[3].ToString();
                     strRes = strWidth + "x" + strHeight;
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Resolution: " + strRes);
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS -", "Sharing a full screen - resolution: " + strRes);
                 }
             }
 
@@ -350,7 +350,7 @@ namespace TATPlugin_Teams
                     strDT = mcSS2[i].Groups[1].ToString();
                     strSS = mcSS2[i].Groups[2].ToString();
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Call to " + strSS.ToLower() + " screensharing was successful");
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS -", "Call to " + strSS.ToLower() + " screensharing was successful");
                 }
             }
 
@@ -363,7 +363,7 @@ namespace TATPlugin_Teams
 
                     strStatus = GetVideoStatus(strStatus);
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Screensharing status set to: " + strStatus);
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS -", "Screensharing status set to: " + strStatus);
                 }
             }
 
@@ -375,7 +375,7 @@ namespace TATPlugin_Teams
                     strHwndD = mcSS4[i].Groups[2].ToString();
                     strHwndH = Dec2Hex(strHwndD);
 
-                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS - ", "Sharing a specific app window, WindowID: " + strHwndD + "(dec), " + strHwndH + "(hex)");
+                    AddCallDataEntry(strCallID, strDT, "Outgoing VbSS -", "Sharing a specific app window, WindowID: " + strHwndD + "(dec), " + strHwndH + "(hex)");
                 }
             }
 
@@ -437,7 +437,7 @@ namespace TATPlugin_Teams
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "Video/VbSS Name: " + strVidname + ", VideoId: " + strVideoID + ", Remote ParticipantID: " + strRemotePartID);
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS -", "Video/VbSS Name: " + strVidname + ", VideoId: " + strVideoID + ", Remote ParticipantID: " + strRemotePartID);
                     bIncomingVid = true;
                 }
             }
@@ -458,7 +458,7 @@ namespace TATPlugin_Teams
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Subscribe request sent.");
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS -", "VideoId: " + strVideoID + " - Subscribe request sent.");
                     bIncomingVid = true;
                 }
             }
@@ -479,7 +479,7 @@ namespace TATPlugin_Teams
                         g_VidStrIds.Add(new Tuple<string, string>(strVideoID, strStreamID));
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Subscribe completed.");
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS -", "VideoId: " + strVideoID + " - Subscribe completed.");
                     bIncomingVid = true;
                 }
             }
@@ -511,7 +511,7 @@ namespace TATPlugin_Teams
                         }
                     }
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - changed from " + strOldStatus + " to " + strNewStatus);
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS -", "VideoId: " + strVideoID + " - changed from " + strOldStatus + " to " + strNewStatus);
                 }
             }
 
@@ -540,7 +540,7 @@ namespace TATPlugin_Teams
                                 }
                             }
 
-                            AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
+                            AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS -", "VideoId: " + strVideoID + " - Rendering: " + strRendering + ", Resolution: " + strRes);
                         }
                     }
                 }
@@ -557,7 +557,7 @@ namespace TATPlugin_Teams
                     if (strVideoID == "4294967294") // Clean this up. In the Media log videoID will be "-2" for a P2P call where video is shared
                         strVideoID = "-2";
 
-                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS - ", "VideoId: " + strVideoID + " - Is focussed/pinned: " + strPinned);
+                    AddCallDataEntry(strCallID, strDT, "Incoming Video/VbSS -", "VideoId: " + strVideoID + " - Is focussed/pinned: " + strPinned);
                 }
             }
         } // GetInVideoData
