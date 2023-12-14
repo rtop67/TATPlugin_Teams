@@ -7,3 +7,5 @@ build_property.ApplicationUseCompatibleTextRendering =
 build_property.ApplicationVisualStyles = 
 build_property.RootNamespace = TATPlugin_Teams
 build_property.ProjectDir = C:\WorkStuff\Repos\TATPlugin_Teams\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

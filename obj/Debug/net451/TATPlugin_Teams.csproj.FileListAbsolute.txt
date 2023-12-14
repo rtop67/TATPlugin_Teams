@@ -17,3 +17,6 @@ C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.csproj.CoreC
 C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.dll
 C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.pdb
 C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.sourcelink.json
+C:\WorkStuff\Repos\TATPlugin_Teams\bin\Debug\net451\TATPlugin_Teams.dll.config
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.Properties.Resources.resources
+C:\WorkStuff\Repos\TATPlugin_Teams\obj\Debug\net451\TATPlugin_Teams.csproj.GenerateResource.cache
