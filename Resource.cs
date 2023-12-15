@@ -114,7 +114,7 @@ namespace TATPlugin_Teams
         }
 
         // OS version info
-        public static string[,] rgOSVer = new string[75, 2]  // Will need updating as new OS builds release
+        public static string[,] rgOSVer = new string[86, 2]  // Will need updating as new OS builds release
         {
             {"10.15.0", "MacOS Catalina Released 10-7-2019" },
             {"10.15.1", "MacOS Catalina Released 10-29-2019" },
@@ -172,6 +172,17 @@ namespace TATPlugin_Teams
             {"13.4", "MacOS Ventura Released 5-18-2023" },
             {"13.4.1", "MacOS Ventura Released 6-21-2023" },
             {"13.5", "MacOS Ventura Released 7-24-2023" },
+            {"13.5.1", "MacOS Ventura Released 8-17-2023" },
+            {"13.5.2", "MacOS Ventura Released 9-7-2023" },
+            {"13.6", "MacOS Ventura Released 9-21-2023" },
+            {"13.6.1", "MacOS Ventura Released 10-25-2023" },
+            {"13.6.2", "MacOS Ventura Released 11-7-2023" },
+            {"13.6.3", "MacOS Ventura Released 12-11-2023" },
+            {"14.0", "MacOS Sonoma Released 9-26-2023" },
+            {"14.1", "MacOS Sonoma Released 10-25-2023" },
+            {"14.1.1", "MacOS Sonoma Released 11-7-2023" },
+            {"14.1.2", "MacOS Sonoma Released 11-30-2023" },
+            {"14.2", "MacOS Sonoma Released 12-11-2023" },
             {"9200", "Windows 8 or Windows Server 2012" },
             {"9600", "Windows 8.1 or Windows Server 2012 R2" },
             {"10240", "Win10 TH1 Released 7-29-2015" },

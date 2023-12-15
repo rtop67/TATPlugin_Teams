@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TATPlugin_Teams")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.5")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93332fbac7fde8a44641e04f30a1cca1022d0bf3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("TATPlugin_Teams")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TATPlugin_Teams")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.5")]
